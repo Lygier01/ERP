@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="description" content="Week 2 Session 4 ERP lesson presentation">
+<title>Lesson 03 | Core ERP Modules</title>
+<style>
+:root {
+  --background: #fafafa;
+  --foreground: #1a1a1a;
+  --accent: #ff5722;
+  --accent-strong: #db3d0d;
+  --accent-soft: rgba(255,87,34,.075);
+  --card: #ffffff;
+  --muted: #5f6b7a;
+  --border: rgba(26,26,26,.105);
+  --success: #197a64;
+  --blue: #245d91;
+  --gold: #9a6400;
+  --shadow: 0 18px 60px rgba(0,0,0,.13);
+  --display: 'Archivo', 'Arial Black', 'Segoe UI', sans-serif;
+  --body: 'Space Grotesk', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: #171717;
+  color: var(--foreground);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+button { font: inherit; }
+#stage {
+  width: 1920px;
+  height: 1080px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  background: var(--background);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 74px 88px 118px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 78% 18%, rgba(255,87,34,.065), transparent 42%),
+    linear-gradient(145deg, #fafafa 0%, #f5f2ef 46%, #fafafa 100%);
+}
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,26,26,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,26,26,.026) 1px, transparent 1px);
+  background-size: 160px 160px;
+  pointer-events: none;
+}
+.slide.active { display: flex; }
+.slide > * { position: relative; z-index: 1; }
+.hero { justify-content: center; padding-bottom: 120px; }
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: 105px;
+  top: 125px;
+  border: 64px solid rgba(255,87,34,.08);
+  border-radius: 50%;
+  box-shadow: 0 0 0 70px rgba(255,87,34,.035), 0 0 0 140px rgba(255,87,34,.018);
+}
+.section-number {
+  position: absolute;
+  top: 44px;
+  right: 82px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 180px;
+  line-height: 1;
+  color: rgba(255,87,34,.065);
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  margin-bottom: 18px;
+}
+h1, h2, h3 { font-family: var(--display); }
+h1 {
+  font-size: 100px;
+  line-height: 1.01;
+  letter-spacing: -.035em;
+  font-weight: 900;
+  max-width: 1320px;
+}
+h2 {
+  font-size: 56px;
+  line-height: 1.09;
+  letter-spacing: -.022em;
+  font-weight: 850;
+  max-width: 1500px;
+}
+h3 { font-size: 30px; line-height: 1.16; font-weight: 800; }
+p, li, td { font-size: 24px; line-height: 1.43; }
+.lede { margin-top: 22px; color: var(--muted); font-size: 30px; max-width: 1100px; }
+.small { font-size: 20px !important; color: var(--muted); }
+.kicker { color: var(--accent); font-weight: 800; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; margin-top: 34px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 34px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 32px; }
+.card {
+  background: rgba(255,255,255,.94);
+  border: 1px solid var(--border);
+  padding: 28px 30px;
+  position: relative;
+  min-height: 150px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.035);
+}
+.card h3 { margin-bottom: 10px; }
+.card p, .card li { font-size: 22px; color: #424a54; }
+.card-number {
+  position: absolute;
+  right: 22px;
+  top: 16px;
+  font-family: var(--display);
+  color: rgba(255,87,34,.17);
+  font-size: 48px;
+  font-weight: 900;
+}
+.definition {
+  margin-top: 32px;
+  background: rgba(255,87,34,.045);
+  border-left: 6px solid var(--accent);
+  padding: 28px 34px;
+}
+.definition .label { color: var(--accent); font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 8px; }
+.definition p { font-size: 28px; font-weight: 540; }
+.bullets { list-style: none; margin-top: 28px; display: grid; gap: 13px; }
+.bullets li { padding: 12px 16px 12px 38px; border-bottom: 1px solid var(--border); position: relative; }
+.bullets li::before { content: ''; position: absolute; left: 4px; top: 23px; width: 13px; height: 13px; background: var(--accent); }
+.callout {
+  margin-top: 26px;
+  background: var(--accent);
+  color: #fff;
+  padding: 26px 34px;
+}
+.callout p { font-size: 25px; color: rgba(255,255,255,.95); }
+.callout h3 { margin-bottom: 8px; }
+.caption { margin-top: 12px; color: var(--muted); font-size: 18px; }
+.table-wrap { margin-top: 28px; border: 1px solid var(--border); background: rgba(255,255,255,.92); overflow: hidden; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 15px 18px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+th { color: var(--accent-strong); background: rgba(255,87,34,.04); font-size: 18px; text-transform: uppercase; letter-spacing: .055em; }
+tr:last-child td { border-bottom: 0; }
+.compact td { font-size: 20px; padding: 12px 14px; }
+.compact th { font-size: 16px; padding: 12px 14px; }
+.pill { display: inline-block; padding: 4px 10px; background: var(--accent-soft); color: var(--accent-strong); font-size: 16px; font-weight: 800; border-radius: 99px; }
+.layer-stack { display: grid; gap: 16px; width: 100%; margin-top: 30px; }
+.layer {
+  display: grid;
+  grid-template-columns: 250px 1fr 380px;
+  align-items: center;
+  min-height: 126px;
+  background: rgba(255,255,255,.94);
+  border: 1px solid var(--border);
+  padding: 22px 28px;
+}
+.layer .name { font-family: var(--display); font-size: 30px; font-weight: 850; }
+.layer .desc { font-size: 22px; color: #424a54; padding: 0 26px; }
+.layer .purpose { font-size: 19px; color: var(--muted); border-left: 3px solid var(--accent); padding-left: 22px; }
+.flow-row { display: flex; align-items: stretch; gap: 14px; margin-top: 34px; }
+.flow-node { flex: 1; background: rgba(255,255,255,.95); border: 1px solid var(--border); padding: 24px 18px; text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 145px; }
+.flow-node h3 { font-size: 25px; }
+.flow-node p { font-size: 19px; color: var(--muted); margin-top: 8px; }
+.flow-arrow { width: 42px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 38px; font-weight: 900; }
+.architecture-box {
+  margin-top: 28px;
+  background: rgba(255,255,255,.94);
+  border: 1px solid var(--border);
+  padding: 22px;
+  min-height: 505px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+}
+.architecture-box svg { width: 100%; height: 455px; }
+.module-ring { margin-top: 24px; display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 24px; align-items: center; }
+.module-col { display: grid; gap: 18px; }
+.module-core { background: var(--accent); color: #fff; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; }
+.module-core h3 { font-size: 38px; }
+.module-core p { color: rgba(255,255,255,.9); margin-top: 12px; }
+.info-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+.info-chip { padding: 18px; background: rgba(255,255,255,.94); border: 1px solid var(--border); text-align: center; font-size: 19px; font-weight: 700; }
+.split { display: grid; grid-template-columns: 1.05fr .95fr; gap: 32px; margin-top: 26px; min-height: 545px; }
+.panel { background: rgba(255,255,255,.94); border: 1px solid var(--border); padding: 28px 30px; }
+.panel h3 { margin-bottom: 14px; }
+.panel p, .panel li { font-size: 21px; }
+.panel .bullets { gap: 7px; margin-top: 14px; }
+.panel .bullets li { padding-top: 8px; padding-bottom: 8px; }
+.mini-stack { display: grid; gap: 12px; }
+.mini-layer { padding: 18px 20px; border: 1px solid var(--border); background: #fff; }
+.mini-layer strong { color: var(--accent-strong); font-size: 22px; }
+.mini-layer span { display: block; color: var(--muted); font-size: 18px; margin-top: 4px; }
+.summary-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 34px; }
+.summary-card { background: rgba(255,255,255,.95); border-top: 7px solid var(--accent); padding: 28px; min-height: 230px; }
+.summary-card h3 { margin-bottom: 10px; }
+.summary-card p { font-size: 21px; color: #424a54; }
+.footer-tag { position: absolute; bottom: 34px; left: 88px; font-size: 15px; color: var(--muted); }
+.slide-tag { position: absolute; bottom: 34px; right: 88px; font-size: 16px; color: rgba(26,26,26,.4); font-weight: 700; }
+.reveal { opacity: 0; transform: translateY(22px); }
+.slide.active.entered .reveal { animation: enter .62s cubic-bezier(.16,1,.3,1) forwards; }
+.reveal.d2 { animation-delay: .11s !important; }
+.reveal.d3 { animation-delay: .22s !important; }
+.reveal.d4 { animation-delay: .33s !important; }
+.fragment { opacity: 0; transform: translateY(18px); visibility: hidden; }
+.fragment.shown { visibility: visible; animation: fragmentIn .5s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes enter { to { opacity: 1; transform: translateY(0); } }
+@keyframes fragmentIn { to { opacity: 1; transform: translateY(0); } }
+#chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+#progressTrack { position: absolute; left: 0; top: 0; width: 100%; height: 7px; background: rgba(26,26,26,.08); }
+#progressBar { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+#controls {
+  pointer-events: auto;
+  position: absolute;
+  right: 76px;
+  bottom: 22px;
+  display: flex;
+  gap: 10px;
+}
+.control-btn {
+  min-width: 112px;
+  height: 52px;
+  border: 1px solid rgba(26,26,26,.14);
+  background: rgba(255,255,255,.95);
+  color: var(--foreground);
+  padding: 0 18px;
+  font-weight: 750;
+  font-size: 17px;
+  cursor: pointer;
+}
+.control-btn:hover, .control-btn:focus-visible { border-color: var(--accent); outline: 3px solid rgba(255,87,34,.18); }
+.control-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+#dots {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 9px;
+}
+.dot { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--foreground); background: transparent; opacity: .4; cursor: pointer; padding: 0; }
+.dot.active { background: var(--accent); border-color: var(--accent); opacity: 1; transform: scale(1.15); }
+#status { position: absolute; left: 88px; bottom: 18px; font-size: 14px; color: rgba(26,26,26,.38); }
+#orientationHint {
+  display: none;
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(0,0,0,.82);
+  color: #fff;
+  padding: 9px 13px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(10,10,10,.88);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+}
+#modal.open { display: flex; }
+#modalContent { width: min(1500px, 92vw); height: min(850px, 86vh); background: #fff; padding: 28px; display: flex; align-items: center; justify-content: center; }
+#modalContent svg { width: 100%; height: 100%; }
+#modalClose { position: fixed; right: 28px; top: 22px; width: 48px; height: 48px; border: 0; background: var(--accent); color: #fff; font-size: 28px; cursor: pointer; }
+.zoom-note { position: absolute; right: 14px; bottom: 10px; font-size: 14px; color: var(--muted); }
+@media (orientation: portrait) and (max-width: 700px) { #orientationHint { display: block; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+@media print {
+  html, body { overflow: visible; background: white; height: auto; }
+  #stage { position: static; transform: none !important; width: 1920px; height: auto; box-shadow: none; }
+  .slide { position: relative; display: flex !important; page-break-after: always; break-after: page; height: 1080px; }
+  .fragment { opacity: 1 !important; visibility: visible !important; transform: none !important; }
+  #chrome, #orientationHint, #modal { display: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="stage" aria-label="ERP Week 2 Session 4 presentation">
+<section class="slide hero" id="slide-1" data-title="Core ERP Modules Overview: Finance, Procurement, and Inventory" aria-hidden="true"><div class="section-number">04</div><div class="eyebrow reveal">Week 2 · Session 4</div><h1 class="reveal d2">Core ERP Modules:<br>Finance, Procurement,<br>and Inventory</h1><p class="lede reveal d3">How three foundational modules coordinate money, purchasing, stock, controls, and enterprise data</p><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">1 / 15</div></section><section class="slide " id="slide-2" data-title="Intended Learning Outcomes" aria-hidden="true"><div class="eyebrow reveal">Intended learning outcomes · CLO 1</div><h2 class="reveal d2">By the end of this session, you should be able to:</h2><ul class="bullets"><li class="fragment">Identify the purpose and core records of the Finance, Procurement, and Inventory modules.</li><li class="fragment">Describe the functions of the General Ledger, Accounts Payable, and Accounts Receivable components.</li><li class="fragment">Trace how purchasing and inventory events create connected financial effects.</li><li class="fragment">Differentiate module responsibilities while explaining their dependence on shared master data and controls.</li><li class="fragment">Explain how integrated modules support operational visibility and organizational decision-making.</li></ul><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">2 / 15</div></section><section class="slide " id="slide-3" data-title="Modules Within an Integrated ERP System" aria-hidden="true"><div class="eyebrow reveal">Lesson context</div><h2 class="reveal d2">ERP modules organize specialized work without recreating information silos.</h2><div class="module-ring"><div class="module-col"><div class="card fragment"><h3>Finance</h3><p>Records monetary effects, obligations, claims, balances, and financial results.</p></div><div class="card fragment"><h3>Procurement</h3><p>Controls supplier relationships, purchasing authorization, ordering, and receipt matching.</p></div></div><div class="module-core reveal d3"><h3>Shared ERP Platform</h3><p>Common master data, transaction rules, workflow, security, audit trail, and reporting</p></div><div class="module-col"><div class="card fragment"><h3>Inventory</h3><p>Maintains quantity, location, status, movement, availability, and valuation data.</p></div><div class="card fragment"><h3>Integration principle</h3><p>Each module owns a functional responsibility while using the same enterprise records.</p></div></div></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">3 / 15</div></section><section class="slide " id="slide-4" data-title="Finance Module: GL, AP, and AR" aria-hidden="true"><div class="eyebrow reveal">Finance module</div><h2 class="reveal d2">Finance provides the organization’s unified financial record.</h2><div class="definition reveal d3"><div class="label">Definition</div><p>The Finance module records, classifies, controls, summarizes, and reports the monetary effects of enterprise operations.</p></div><div class="grid-3"><div class="card fragment"><h3>General Ledger (GL)</h3><p>The central accounting record containing accounts, journal entries, balances, periods, and financial statements.</p></div><div class="card fragment"><h3>Accounts Payable (AP)</h3><p>Manages supplier obligations, invoices, due dates, payment status, and related control records.</p></div><div class="card fragment"><h3>Accounts Receivable (AR)</h3><p>Manages customer claims, invoices, collections, aging, credit status, and outstanding balances.</p></div></div><div class="callout reveal d4"><p>Finance does not operate only at period end. Integrated modules create financial entries as authorized operational events occur.</p></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">4 / 15</div></section><section class="slide " id="slide-5" data-title="Finance Data Flow and Internal Control" aria-hidden="true"><div class="eyebrow reveal">Finance structure and control</div><h2 class="reveal d2">Subledgers feed the General Ledger through controlled posting.</h2><div class="flow-row reveal d3"><div class="flow-node"><h3>Operational event</h3><p>Authorized purchasing, receipt, sale, payment, adjustment, or allocation</p></div><div class="flow-arrow">→</div><div class="flow-node"><h3>Subledger record</h3><p>Supplier, customer, asset, inventory, payroll, or other detailed balance</p></div><div class="flow-arrow">→</div><div class="flow-node"><h3>Journal posting</h3><p>Account, amount, date, reference, cost center, and control information</p></div><div class="flow-arrow">→</div><div class="flow-node"><h3>General Ledger</h3><p>Consolidated balances and financial reporting structure</p></div></div><div class="grid-4"><div class="card fragment"><h3>Approval</h3><p>Authorized roles review and release sensitive transactions.</p></div><div class="card fragment"><h3>Period control</h3><p>Posting dates and open periods protect reporting consistency.</p></div><div class="card fragment"><h3>Reconciliation</h3><p>Detailed records are matched to control accounts and external evidence.</p></div><div class="card fragment"><h3>Audit trail</h3><p>References and change histories support traceability and accountability.</p></div></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">5 / 15</div></section><section class="slide " id="slide-6" data-title="Procurement Module: Purpose and Functions" aria-hidden="true"><div class="eyebrow reveal">Procurement module</div><h2 class="reveal d2">Procurement governs how organizational needs become authorized purchases.</h2><div class="definition reveal d3"><div class="label">Definition</div><p>The Procurement module manages supplier information, purchasing requests, approvals, purchase orders, receipts, invoice matching, and purchasing performance data.</p></div><div class="grid-3"><div class="card fragment"><h3>Supplier management</h3><p>Maintains approved supplier records, commercial terms, contacts, status, and performance information.</p></div><div class="card fragment"><h3>Purchase authorization</h3><p>Routes requested goods and services through policy-based review, budget, and approval controls.</p></div><div class="card fragment"><h3>Purchase order control</h3><p>Creates the formal purchasing document that defines item, quantity, price, delivery, and responsibility.</p></div><div class="card fragment"><h3>Receipt coordination</h3><p>Connects delivered quantities and accepted services to the original purchase order.</p></div><div class="card fragment"><h3>Invoice matching</h3><p>Compares purchasing, receipt, and supplier invoice records before financial recognition and payment.</p></div><div class="card fragment"><h3>Purchasing visibility</h3><p>Provides status, commitments, lead times, exceptions, and supplier performance information.</p></div></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">6 / 15</div></section><section class="slide " id="slide-7" data-title="Procurement Process and Document Flow" aria-hidden="true"><div class="eyebrow reveal">Procurement document chain</div><h2 class="reveal d2">Each document changes the organization’s level of commitment and control.</h2><div class="flow-row"><div class="flow-node fragment"><h3>Requirement</h3><p>Identifies an authorized organizational need</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Purchase requisition</h3><p>Requests review, sourcing, and approval</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Purchase order</h3><p>Creates a controlled commitment to the supplier</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Receipt</h3><p>Confirms quantity, condition, location, and acceptance</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Invoice and payment</h3><p>Recognizes the obligation and settles it under control</p></div></div><div class="callout reveal d4"><p>The document chain provides authorization, traceability, status visibility, and a basis for matching operational and financial records.</p></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">7 / 15</div></section><section class="slide " id="slide-8" data-title="Inventory Module: Purpose and Functions" aria-hidden="true"><div class="eyebrow reveal">Inventory module</div><h2 class="reveal d2">Inventory maintains trusted records of stock quantity, location, status, and value.</h2><div class="definition reveal d3"><div class="label">Definition</div><p>The Inventory module records and controls items as they are received, stored, transferred, reserved, issued, counted, adjusted, and valued.</p></div><div class="grid-3"><div class="card fragment"><h3>Item master</h3><p>Defines item identity, description, units, classifications, controls, and relevant planning settings.</p></div><div class="card fragment"><h3>Location structure</h3><p>Represents warehouses, storage areas, bins, branches, and other controlled stock locations.</p></div><div class="card fragment"><h3>Quantity status</h3><p>Distinguishes on-hand, available, reserved, in-transit, blocked, or inspection quantities.</p></div><div class="card fragment"><h3>Stock movement</h3><p>Records receipts, transfers, issues, returns, and adjustments with dates, references, and users.</p></div><div class="card fragment"><h3>Valuation</h3><p>Connects physical quantities to costing rules and financial inventory balances.</p></div><div class="card fragment"><h3>Replenishment</h3><p>Uses demand, minimum levels, lead times, and planning rules to signal supply needs.</p></div></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">8 / 15</div></section><section class="slide " id="slide-9" data-title="Inventory Records, Movements, and Control" aria-hidden="true"><div class="eyebrow reveal">Inventory control structure</div><h2 class="reveal d2">Reliable stock information requires aligned records, movements, and verification.</h2><div class="layer-stack"><div class="layer fragment"><div class="name">Identity</div><div class="desc">Item code, description, unit of measure, classification, and control attributes</div><div class="purpose">Prevents duplicate or ambiguous item records</div></div><div class="layer fragment"><div class="name">Location</div><div class="desc">Warehouse, storage area, bin, branch, ownership, and stock status</div><div class="purpose">Shows where stock is and whether it may be used</div></div><div class="layer fragment"><div class="name">Movement</div><div class="desc">Receipt, transfer, issue, reservation, return, adjustment, and reference document</div><div class="purpose">Explains every increase, decrease, and change of custody</div></div><div class="layer fragment"><div class="name">Verification</div><div class="desc">Cycle counts, physical counts, reconciliation, approvals, and exception analysis</div><div class="purpose">Keeps system records aligned with controlled physical evidence</div></div></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">9 / 15</div></section><section class="slide " id="slide-10" data-title="Procurement–Inventory–Finance Integration" aria-hidden="true"><div class="eyebrow reveal">Integrated visual explanation</div><h2 class="reveal d2">A purchasing event becomes inventory and financial information.</h2><div class="architecture-box zoomable reveal d3" aria-label="Integrated procurement inventory and finance flow">
+<svg viewBox="0 0 1500 430" role="img" aria-label="Integrated procurement inventory and finance data flow">
+  <defs><marker id="mf" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ff5722"/></marker></defs>
+  <rect x="50" y="120" width="350" height="190" rx="18" fill="#fff7f3" stroke="#ff5722" stroke-width="3"/>
+  <text x="225" y="172" text-anchor="middle" font-family="Arial" font-size="31" font-weight="700">Procurement</text>
+  <text x="225" y="215" text-anchor="middle" font-family="Arial" font-size="20" fill="#5f6b7a">Supplier and purchasing records</text>
+  <text x="225" y="250" text-anchor="middle" font-family="Arial" font-size="20" fill="#5f6b7a">Authorized purchasing documents</text>
+  <rect x="575" y="120" width="350" height="190" rx="18" fill="#f4fbf8" stroke="#197a64" stroke-width="3"/>
+  <text x="750" y="172" text-anchor="middle" font-family="Arial" font-size="31" font-weight="700">Inventory</text>
+  <text x="750" y="215" text-anchor="middle" font-family="Arial" font-size="20" fill="#5f6b7a">Quantity, location, status</text>
+  <text x="750" y="250" text-anchor="middle" font-family="Arial" font-size="20" fill="#5f6b7a">Receipt, transfer, issue, adjustment</text>
+  <rect x="1100" y="120" width="350" height="190" rx="18" fill="#f7fbff" stroke="#245d91" stroke-width="3"/>
+  <text x="1275" y="172" text-anchor="middle" font-family="Arial" font-size="31" font-weight="700">Finance</text>
+  <text x="1275" y="215" text-anchor="middle" font-family="Arial" font-size="20" fill="#5f6b7a">Payables, ledger, valuation</text>
+  <text x="1275" y="250" text-anchor="middle" font-family="Arial" font-size="20" fill="#5f6b7a">Posting, control, reporting</text>
+  <line x1="405" y1="190" x2="565" y2="190" stroke="#ff5722" stroke-width="5" marker-end="url(#mf)"/>
+  <text x="485" y="168" text-anchor="middle" font-family="Arial" font-size="17" fill="#5f6b7a">ordered and received</text>
+  <line x1="930" y1="190" x2="1090" y2="190" stroke="#ff5722" stroke-width="5" marker-end="url(#mf)"/>
+  <text x="1010" y="168" text-anchor="middle" font-family="Arial" font-size="17" fill="#5f6b7a">value and liability</text>
+  <line x1="1090" y1="260" x2="930" y2="260" stroke="#ff5722" stroke-width="5" marker-end="url(#mf)"/>
+  <text x="1010" y="292" text-anchor="middle" font-family="Arial" font-size="17" fill="#5f6b7a">accounts and controls</text>
+  <line x1="565" y1="260" x2="405" y2="260" stroke="#ff5722" stroke-width="5" marker-end="url(#mf)"/>
+  <text x="485" y="292" text-anchor="middle" font-family="Arial" font-size="17" fill="#5f6b7a">availability and exceptions</text>
+</svg><span class="zoom-note">Tap or click to enlarge</span></div><p class="caption">The modules remain functionally distinct, but shared references and controlled events keep quantities, commitments, liabilities, and ledger values synchronized.</p><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">10 / 15</div></section><section class="slide " id="slide-11" data-title="Shared Master Data Across Modules" aria-hidden="true"><div class="eyebrow reveal">Shared master data</div><h2 class="reveal d2">Integration depends on common reference records.</h2><div class="table-wrap reveal d3"><table class="compact"><thead><tr><th>Master record</th><th>Procurement use</th><th>Inventory use</th><th>Finance use</th></tr></thead><tbody><tr><td><strong>Supplier</strong></td><td>Approved source, terms, purchasing status</td><td>Receipt source and return reference</td><td>Payable account, payment terms, tax and control attributes</td></tr><tr><td><strong>Item</strong></td><td>Order identity, unit, purchasing data</td><td>Quantity, location, movement, status</td><td>Inventory and expense accounts, valuation rules</td></tr><tr><td><strong>Organizational unit</strong></td><td>Requester, buyer, purchasing group</td><td>Warehouse, branch, storage responsibility</td><td>Company, cost center, profit center, reporting unit</td></tr><tr><td><strong>Account and classification</strong></td><td>Spend category and budget treatment</td><td>Stock category and valuation connection</td><td>Ledger account, posting rule, financial statement classification</td></tr><tr><td><strong>User and role</strong></td><td>Request, approve, order, receive</td><td>Move, count, adjust, review</td><td>Post, reconcile, pay, close, report</td></tr></tbody></table></div><div class="callout reveal d4"><p>When master data is duplicated or inconsistent, module integration becomes unreliable even when the software is technically connected.</p></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">11 / 15</div></section><section class="slide " id="slide-12" data-title="Cross-Module Event Matrix" aria-hidden="true"><div class="eyebrow reveal">Cross-module effects</div><h2 class="reveal d2">One authorized event can update several records at once.</h2><div class="table-wrap reveal d3"><table class="compact"><thead><tr><th>Business event</th><th>Procurement effect</th><th>Inventory effect</th><th>Finance effect</th></tr></thead><tbody><tr><td><strong>Purchase order approved</strong></td><td>Order commitment becomes active</td><td>Expected receipt may become visible</td><td>Commitment or budget information may update</td></tr><tr><td><strong>Goods received</strong></td><td>Ordered quantity is updated</td><td>On-hand quantity and location increase</td><td>Inventory value and interim liability may be recognized</td></tr><tr><td><strong>Supplier invoice accepted</strong></td><td>Order and receipt are matched</td><td>Quantity reference supports verification</td><td>Accounts Payable liability is recorded</td></tr><tr><td><strong>Payment released</strong></td><td>Supplier status and document history update</td><td>No physical quantity change</td><td>Cash decreases and payable balance is settled</td></tr><tr><td><strong>Inventory adjustment approved</strong></td><td>No new purchase commitment</td><td>System quantity changes with reason and authorization</td><td>Valuation difference is posted according to policy</td></tr></tbody></table></div><p class="caption">Configuration determines the exact timing and accounting treatment, but the integration principle remains: operational events create coordinated records.</p><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">12 / 15</div></section><section class="slide " id="slide-13" data-title="Module Integration Challenges and Controls" aria-hidden="true"><div class="eyebrow reveal">Challenges and considerations</div><h2 class="reveal d2">Module integration requires disciplined data, timing, authorization, and reconciliation.</h2><div class="grid-3"><div class="card fragment"><h3>Duplicate master records</h3><p>Multiple supplier or item identities fragment history and create inconsistent balances.</p></div><div class="card fragment"><h3>Timing differences</h3><p>Late receipts, invoices, postings, or adjustments can make operational and financial views temporarily disagree.</p></div><div class="card fragment"><h3>Authorization gaps</h3><p>Weak role design may allow incompatible actions or bypass purchasing and payment controls.</p></div><div class="card fragment"><h3>Valuation errors</h3><p>Incorrect units, costs, accounts, or movement types can distort stock and financial results.</p></div><div class="card fragment"><h3>Unresolved exceptions</h3><p>Quantity, price, receipt, and invoice mismatches require ownership and timely resolution.</p></div><div class="card fragment"><h3>Configuration drift</h3><p>Uncontrolled changes to posting, workflow, and master data rules weaken consistency and auditability.</p></div></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">13 / 15</div></section><section class="slide " id="slide-14" data-title="Finance, Procurement, and Inventory as One System" aria-hidden="true"><div class="eyebrow reveal">Concept integration</div><h2 class="reveal d2">Finance, Procurement, and Inventory form a controlled operational loop.</h2><div class="flow-row"><div class="flow-node fragment"><h3>Plan and authorize</h3><p>Need, budget, policy, supplier, and approval</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Acquire and receive</h3><p>Order, delivery, acceptance, quantity, and location</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Record and settle</h3><p>Value, liability, payment, ledger, and reporting</p></div><div class="flow-arrow">→</div><div class="flow-node fragment"><h3>Monitor and improve</h3><p>Availability, spending, supplier performance, exceptions, and decisions</p></div></div><div class="info-strip reveal d4"><div class="info-chip">People and roles</div><div class="info-chip">Integrated processes</div><div class="info-chip">Shared data</div><div class="info-chip">Policies and controls</div></div><div class="callout reveal d4"><p>The modules deliver value when they support one organizational process rather than three isolated departmental systems.</p></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">14 / 15</div></section><section class="slide " id="slide-15" data-title="Lesson Summary" aria-hidden="true"><div class="eyebrow reveal">Lesson summary</div><h2 class="reveal d2">Session 4 key concepts</h2><div class="summary-grid"><div class="summary-card fragment"><h3>Finance</h3><p>The General Ledger, Accounts Payable, and Accounts Receivable organize monetary effects, balances, obligations, claims, controls, and reporting.</p></div><div class="summary-card fragment"><h3>Procurement</h3><p>Supplier management, authorization, purchase orders, receipts, invoice matching, and payment coordination control organizational purchasing.</p></div><div class="summary-card fragment"><h3>Inventory</h3><p>Item, location, quantity, status, movement, verification, and valuation records maintain trusted stock information.</p></div></div><div class="callout reveal d4"><p>Shared master data and controlled transactions connect the three modules, producing synchronized operational and financial visibility for decision-making.</p></div><div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 2 · Session 4</div><div class="slide-tag">15 / 15</div></section>
+<div id="chrome" aria-hidden="false">
+  <div id="progressTrack" aria-label="Presentation progress"><div id="progressBar"></div></div>
+  <div id="dots" aria-label="Slide navigation"></div>
+  <div id="controls">
+    <button class="control-btn" id="prevBtn" type="button" aria-label="Previous lesson element or slide">Previous</button>
+    <button class="control-btn primary" id="nextBtn" type="button" aria-label="Next lesson element or slide">Next</button>
+  </div>
+  <div id="status">Arrow keys navigate · Space reveals or advances · Home/End jump · F toggles full screen</div>
+</div>
+</main>
+<div id="orientationHint" role="status">Rotate to landscape for larger slide text.</div>
+<div id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Enlarged visual">
+  <button id="modalClose" type="button" aria-label="Close enlarged visual">×</button>
+  <div id="modalContent"></div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const progressBar = document.getElementById('progressBar');
+  const dotsWrap = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const modal = document.getElementById('modal');
+  const modalContent = document.getElementById('modalContent');
+  const modalClose = document.getElementById('modalClose');
+  let current = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+
+  function resizeStage() {
+    const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  function buildDots() {
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot';
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.addEventListener('click', () => showSlide(index));
+      dotsWrap.appendChild(dot);
+    });
+  }
+
+  function setFragmentState(slide, reset = false) {
+    const fragments = [...slide.querySelectorAll('.fragment')];
+    fragments.forEach((fragment) => {
+      if (reset) fragment.classList.remove('shown');
+      fragment.setAttribute('aria-hidden', fragment.classList.contains('shown') ? 'false' : 'true');
+    });
+  }
+
+  function showSlide(index) {
+    const clamped = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'entered');
+      slide.setAttribute('aria-hidden', i === clamped ? 'false' : 'true');
+    });
+    current = clamped;
+    const active = slides[current];
+    active.classList.add('active');
+    setFragmentState(active, true);
+    requestAnimationFrame(() => requestAnimationFrame(() => active.classList.add('entered')));
+    const progress = ((current + 1) / slides.length) * 100;
+    progressBar.style.width = `${progress}%`;
+    [...dotsWrap.children].forEach((dot, i) => dot.classList.toggle('active', i === current));
+    prevBtn.disabled = current === 0 && !active.querySelector('.fragment.shown');
+    nextBtn.disabled = current === slides.length - 1 && !active.querySelector('.fragment:not(.shown)');
+    document.title = `${active.dataset.title} — ${current + 1}/${slides.length}`;
+    history.replaceState(null, '', `#slide-${current + 1}`);
+  }
+
+  function revealNext() {
+    const active = slides[current];
+    const nextFragment = active.querySelector('.fragment:not(.shown)');
+    if (nextFragment) {
+      nextFragment.classList.add('shown');
+      nextFragment.setAttribute('aria-hidden', 'false');
+      prevBtn.disabled = false;
+      nextBtn.disabled = current === slides.length - 1 && !active.querySelector('.fragment:not(.shown)');
+      return;
+    }
+    if (current < slides.length - 1) showSlide(current + 1);
+  }
+
+  function retreat() {
+    const active = slides[current];
+    const shown = [...active.querySelectorAll('.fragment.shown')];
+    if (shown.length) {
+      const last = shown[shown.length - 1];
+      last.classList.remove('shown');
+      last.setAttribute('aria-hidden', 'true');
+      nextBtn.disabled = false;
+      prevBtn.disabled = current === 0 && shown.length === 1;
+      return;
+    }
+    if (current > 0) showSlide(current - 1);
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    modalContent.innerHTML = '';
+  }
+
+  function openModal(source) {
+    modalContent.innerHTML = source.innerHTML;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    modalClose.focus();
+  }
+
+  prevBtn.addEventListener('click', retreat);
+  nextBtn.addEventListener('click', revealNext);
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+  document.querySelectorAll('.zoomable').forEach((item) => {
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-label', `${item.getAttribute('aria-label') || 'Visual'}; open enlarged view`);
+    item.addEventListener('click', () => openModal(item));
+    item.addEventListener('keydown', (event) => { if (event.key === 'Enter') openModal(item); });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (modal.classList.contains('open')) {
+      if (event.key === 'Escape') closeModal();
+      return;
+    }
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName)) return;
+    switch (event.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ': event.preventDefault(); revealNext(); break;
+      case 'ArrowLeft': case 'ArrowUp': event.preventDefault(); retreat(); break;
+      case 'Home': event.preventDefault(); showSlide(0); break;
+      case 'End': event.preventDefault(); showSlide(slides.length - 1); break;
+      case 'f': case 'F':
+        event.preventDefault();
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+        break;
+    }
+  });
+
+  window.addEventListener('touchstart', (event) => {
+    if (event.touches.length !== 1) return;
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    touchStartTime = performance.now();
+  }, { passive: true });
+
+  window.addEventListener('touchend', (event) => {
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if (performance.now() - touchStartTime > 700) return;
+    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+    if (dx < 0) revealNext(); else retreat();
+  }, { passive: true });
+
+  window.addEventListener('resize', resizeStage);
+  document.addEventListener('fullscreenchange', resizeStage);
+
+  buildDots();
+  resizeStage();
+  const hashMatch = location.hash.match(/slide-(\d+)/);
+  showSlide(hashMatch ? Number(hashMatch[1]) - 1 : 0);
+  window.__deckTest = { slides, showSlide, revealNext, retreat, get current(){ return current; } };
+})();
+</script>
+</body>
+</html>

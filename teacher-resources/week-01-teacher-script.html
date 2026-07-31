@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1 Teacher's Script (Natural Flow)</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f8f6;
+    --surface: #ffffff;
+    --text: #1c1c1c;
+    --text-secondary: #555;
+    --accent: #b83a1e;
+    --accent-light: #fdf1ee;
+    --border: #e6e2dd;
+    --stage: #f0edf8;
+    --stage-text: #5a3e8a;
+    --speak: #f7fbff;
+    --speak-border: #3a7bbf;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.78;
+    color: var(--text);
+    background: var(--bg);
+    padding: 40px 20px 120px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  header {
+    text-align: center; padding: 36px 28px; margin-bottom: 48px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  }
+  header h1 { font-family: 'Source Serif 4', serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  header p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+
+  .session-break {
+    margin: 64px 0 48px; padding: 28px; text-align: center;
+    background: var(--accent-light); border: 1px solid var(--border); border-radius: 8px;
+  }
+  .session-break h2 { font-family: 'Source Serif 4', serif; font-size: 1.4rem; color: var(--accent); }
+  .session-break p { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
+
+  .slide-section {
+    margin-bottom: 52px;
+    padding-bottom: 44px;
+    border-bottom: 1px solid var(--border);
+  }
+  .slide-section:last-child { border-bottom: none; }
+
+  .slide-heading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-light);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+
+  .stage {
+    display: inline-block;
+    background: var(--stage);
+    color: var(--stage-text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin: 16px 0 8px;
+  }
+
+  .talk {
+    background: var(--speak);
+    border-left: 3px solid var(--speak-border);
+    padding: 16px 20px;
+    margin: 6px 0 14px;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+  .talk p { margin-bottom: 14px; }
+  .talk p:last-child { margin-bottom: 0; }
+
+  @media print {
+    body { padding: 16px; font-size: 13.5px; }
+    .slide-section { page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) { body { padding: 16px 12px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Week 1: Teacher's Script (Natural Flow)</h1>
+  <p>Session 1 &amp; Session 2 · Online Synchronous Class<br>
+  Written to sound natural when read aloud · Conversational Bislish<br>
+  Stage directions in purple · Everything else is spoken as-is</p>
+</header>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="session-break">
+  <h2>Session 1: Introduction to ERP</h2>
+  <p>20 slides · ~65 minutes</p>
+</div>
+<!-- ══════════════════════════════════════════════════════ -->
+
+<div class="slide-section">
+  <div class="slide-heading">Opening</div>
+
+  <div class="stage">[Camera on, screen shared with Slide 1 ready]</div>
+  <div class="talk">
+    <p>"Good morning class! Or afternoon na ba diha sa inyo? Anyway, welcome. Sige, before anything else, makita ba ninyo akong screen? Okay lang ba ang audio? Just give me a thumbs up or type 'okay' sa chat para sure ta."</p>
+  </div>
+
+  <div class="stage">[Waits 5-10 seconds, checks chat]</div>
+  <div class="talk">
+    <p>"Nice, nice. All good. Okay sige, quick reminders lang ha. Mute ang mic if dili mo nag-talk, para walay echo echo. If naay question, raise hand or type sa chat, I check regularly. Ug please, be present ha. Dili lang naay name sa participant list pero nag-TikTok diay sa background."</p>
+    <p>"Joke lang. But seriously, participate. Mas nindot ang class if interactive. Okay? Alright, let's go."</p>
+  </div>
+</div>
+
+<!-- SLIDE 1 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 1 — Title</div>
+
+  <div class="stage">[Shows Slide 1]</div>
+  <div class="talk">
+    <p>"So here's our topic: Introduction to Enterprise Resource Planning. What ERP is, why organizations need it, and how it transforms business operations."</p>
+    <p>"Now, I know that sounds heavy. 'Enterprise Resource Planning.' Murag corporate kaayo pakinggan, no? But don't worry. By the end of today, you'll realize ang concept is actually very logical. Simple ra siya once ma-break down. So just follow along and we'll get there together."</p>
+    <p>"Sige, let's look at what we're aiming for today."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 2 — Objectives</div>
+
+  <div class="stage">[Shows Slide 2]</div>
+  <div class="talk">
+    <p>"Okay, so these are our objectives. By the end of the session, you should be able to: define ERP, identify the problems it solves, explain integration, describe cross-department data flow, and recognize the difference between fragmented versus integrated systems."</p>
+    <p>"Now, I want to be clear ha: dili ta mag-memorize ug definition. Ang goal is understanding. Meaning, if I ask you next week 'Unsa man ang ERP?', dili ninyo kinahanglan i-recite word-for-word. Basta masabtan ninyo ang idea, kaya na ninyo i-explain in your own words. And that's enough."</p>
+    <p>"Alright, so where do we start? Let's start with something very familiar: how a business tracks what it does every day."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 3 — Data in Silos</div>
+
+  <div class="stage">[Shows Slide 3]</div>
+  <div class="talk">
+    <p>"Okay, take a look. Any business, bisan gamay, generates data sa different areas. Sales: receipts, orders. Inventory: stock counts. Finance: who owes what. HR: employees, sweldo. Procurement: suppliers, purchases. Production: what's being made."</p>
+    <p>"So daghan na dayon, no? Even a small negosyo, daghan na ang kinahanglan bantayan."</p>
+    <p>"Now here's the thing. Sa majority of organizations, especially small to medium, matag area ani... naay kanya-kanyang system. Kanya-kanyang file. Kanya-kanyang tao. Ug ang problem? Wala silay connection sa isa't-isa. Isolated sila."</p>
+    <p>"We call that 'silos.' Like sa farm, you know those tall cylindrical containers? Naa'y sulod pero naka-seal, dili connected to the others. Same sa business data: naa sa kanya-kanyang container, dili nag-talk."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Ug para mas relatable... think about diri sa school. Ang enrollment office, naay kanya-kanyang records. Ang accounting, lahi. Have you ever experienced na according to enrollment, clear na mo, pero sa accounting, naa pa'y balance? Or nag-pay na mo pero wala pa na-reflect? That disconnect... mao na ang silo problem. Two departments, two truths. Ug ikaw ang maipit sa tunga."</p>
+    <p>"Same thing happens sa businesses. Every. Single. Day."</p>
+  </div>
+
+  <div class="stage">[Shifts tone slightly]</div>
+  <div class="talk">
+    <p>"Quick question lang: kinsa diri naay family na nag-negosyo? Or naka-part time somewhere? Separate-separate ba ilang records or naay system? Type lang sa chat."</p>
+  </div>
+
+  <div class="stage">[Waits 10-15 sec, reads chat]</div>
+  <div class="talk">
+    <p>"Ah okay, [reads one]. Yeah, Excel diri, POS didto, separate. Mao gyud na ang common setup. Ug mao pud na ang source sa mga problema nga atong tan-awon next."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 4 — Six Problems</div>
+
+  <div class="stage">[Shows Slide 4]</div>
+  <div class="talk">
+    <p>"So unsa ang problems? Six gyud ni sila. Let me go through them."</p>
+    <p>"Number one, <strong>duplicate work</strong>. Ang usa ka transaction, gi-encode sa usa ka tao... then gi-encode na pud sa lain... then gi-encode na pud sa lain. Tulo ka beses. Same info. Tulo ka tao ang nag-type. Sayang sa oras ug triple ang chance nga naay masayop."</p>
+    <p>"Number two, <strong>conflicting data</strong>. Like, ang sales moingon '2 million ang revenue.' Pero ang finance moingon '1.8 million.' So kinsa man ang sakto? Walay answer right away because lahi-lahi ang source."</p>
+    <p>"Three, <strong>slow reports</strong>. Ang manager mangayo ug summary, pero kinahanglan pa mag-gather from different files, different people. So ang report maabot days later."</p>
+    <p>"Four, <strong>poor decisions</strong>. If ang data na basis sa decision is late or wrong... then the decision will also be wrong. Logical lang."</p>
+    <p>"Five, <strong>no traceability</strong>. If naay error somewhere, lisod kaayo i-trace kung asa gikan because nakatag-as ang records."</p>
+    <p>"Ug six, <strong>scaling fails</strong>. Pananglitan mag-open ug second branch. Kung guba na ang setup sa first branch, mas guba pa sa duha ka branch. Double ang chaos."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Now, notice ha... kaning six, connected sila sa isa't-isa. Ang duplicate work mao ang nag-cause sa conflicting data. Ang conflicting data mao ang reason nga slow ang reports, because mag-reconcile pa. Ug ang slow and wrong reports? Mao ang cause sa poor decisions. So domino effect gyud siya."</p>
+    <p>"Sige, to make it more real, let me show you a local example."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 5 — GenSan Grocery</div>
+
+  <div class="stage">[Shows Slide 5]</div>
+  <div class="talk">
+    <p>"Okay so imagine this. Naay grocery diri sa GenSan. Medium-sized. Ang cashier, naay POS. Standalone lang, meaning nag-record sa sales, pero dili connected sa bisan unsa. Ang inventory clerk, naay Excel sa iyang computer, manual count every Saturday. Ang accountant, separate na pud nga software, nag-re-encode based sa receipts. Ug ang owner? Mangutana lang every weekend: 'Kumusta? Pilay halin?'"</p>
+    <p>"So basically... four areas, four tools, zero connection. Ang POS wala kahibalo sa Excel. Ang Excel wala kahibalo sa accounting. Ug ang owner? Ang info maabot sa iyaha Monday, based on Saturday's numbers. By then, outdated na."</p>
+  </div>
+
+  <div class="talk">
+    <p>"And here's what actually happens in that setup. Monday, ang POS naka-record na 50 cases of sardines ang nabaligya. Pero ang inventory clerk? Mag-update sa iyang file Saturday pa. So from Tuesday to Friday, if mangutana ang supplier 'Pila pa ang stock ninyo?', wala'y accurate answer. So what happens? Either over-order because akala daghan pa. Or stockout because akala naa pa. All because... ang data is literally 5 days behind reality."</p>
+    <p>"And then ang owner mangutana 'Pila ang profit this week?', unya makakuha siya ug tulo ka different numbers from tulo ka different tao. Frustrating, no?"</p>
+  </div>
+
+  <div class="stage">[Engages class]</div>
+  <div class="talk">
+    <p>"If ikaw ang owner ani nga grocery, unsa ang pinaka-frustrating for you? Quick, type sa chat."</p>
+  </div>
+
+  <div class="stage">[Waits, reads]</div>
+  <div class="talk">
+    <p>"[Reads] Ah, 'dili kahibalo sa profit on time.' Yeah. [Another] 'Ma-stockout without warning.' Exactly. Kana nga mga frustrations... that's exactly what ERP was designed to solve. And mao na ang sunod nato."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 6 — The Core Question</div>
+
+  <div class="stage">[Shows Slide 6 — big text]</div>
+  <div class="talk">
+    <p>"What if... all business data... lived in one connected system?"</p>
+  </div>
+
+  <div class="stage">[Pauses 3 seconds, lets it sit]</div>
+  <div class="talk">
+    <p>"That's it. That's the question. Simple ra kaayo, no? But ang answer sa question na na... is an entire global industry worth billions. What if dili na separate-separate? What if one system ra ug automatic ang flow? That idea... is ERP. Let's define it."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 7 — ERP Definition</div>
+
+  <div class="stage">[Shows Slide 7]</div>
+  <div class="talk">
+    <p>"ERP. Enterprise Resource Planning. Formal definition: 'An integrated information system that connects the major business functions of an organization through a shared database...' —"</p>
+    <p>"Okay, stop diri sa. 'Shared database.' I-highlight ninyo na sa inyong utak ha. Shared database means: one storage. One source. One version of the truth. For ALL departments. Dili separate files. One lang. That's the magic word."</p>
+    <p>"Sige, padayon."</p>
+    <p>"'...enabling real-time data flow across departments and supporting coordinated planning, execution, and control.'"</p>
+  </div>
+
+  <div class="talk">
+    <p>"Okay, in simpler terms ha. Basically: one system, where tanan departments nag-work sa same data, updated immediately. So the business can operate as one team instead of separate islands na dili nag-communicate."</p>
+    <p>"Ang keyword gyud: integrated. Now, daghan na'y computer sa offices no? Pero disconnected gihapon. Ang point sa ERP is dili ang computer. It's the connection between them. Gets?"</p>
+  </div>
+
+  <div class="talk">
+    <p>"And if i-break nato ang term: Enterprise means the whole organization, not just one team. Resource means everything the org uses: money, people, materials, time, info. Planning means coordinating, deciding, forecasting, controlling."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Now para mas clear... simplest analogy I can think of: <strong>group chat</strong>. Before GC, if naay announcement, text one by one. Slow. Naay ma-miss. Naay delayed. With GC? One message, everyone gets it, same time, same version. Nobody left behind. ERP is basically the business version of that. One system, everybody on the same page."</p>
+  </div>
+
+  <div class="stage">[Engages]</div>
+  <div class="talk">
+    <p>"Quick question: sa inyong own understanding, unsa ang difference sa 'naay computers ang office' versus 'naay ERP ang office'? Anyone?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Reads response] Ah nice. 'Computers can be disconnected; ERP means connected through shared data.' Exactly. Perfect answer. Ang ERP is about the connection, not the hardware. Okay, let's move on."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 8 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 8 — Four Characteristics</div>
+
+  <div class="stage">[Shows Slide 8]</div>
+  <div class="talk">
+    <p>"So para officially ma-call as ERP, four characteristics ang kinahanglan naa. Let me read them."</p>
+    <p>"One: Integration. Meaning, connected ang modules. Something happens diri, automatic naay effect didto. Two: Shared database. One source for all, dili parallel files. Three: Real-time. Immediate ang updates. Dili weekly, dili monthly. Now. Four: Cross-functional. Covers multiple areas: finance, sales, inventory, HR, so on."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Now here's the thing: if wala bisan usa sa four, dili pa gyud full ERP. Like, naay system na covers finance ug inventory, pero weekly lang mag-sync? Not real-time. So technically... not ERP yet. All four must be there."</p>
+    <p>"And of the four, ang shared database is probably the most important to really understand. So let me zoom in on that."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 9 — Shared Database</div>
+
+  <div class="stage">[Shows Slide 9]</div>
+  <div class="talk">
+    <p>"Tan-awa ang comparison. Without shared database: Sales naay customer list A, Finance naay customer list B. Over time, mag-kalahi na sila. Updates dili same speed. Need mag-reconcile regularly. With shared database: usa ra ka customer record. Both Sales ug Finance nag-access sa same one. Update once, reflected everywhere. Always consistent."</p>
+  </div>
+
+  <div class="talk">
+    <p>"So basically, ang shared database mao ang nag-solve sa conflicting data problem at the root. Remember ang 2 million versus 1.8 million? Na-exist na because multiple versions. If usa ra ang source... impossible mag-conflict. Because usa ra man gyud. Wala nay 'version 1, version 2.' Usa ra forever."</p>
+  </div>
+
+  <div class="talk">
+    <p>"And you know what? Best analogy for this is Google Docs. If ever nag-group project mo ug nag-send-send mo ug Word file sa email... naa'y version 1, version 2, 'final,' 'final revised,' 'final final updated.' Chaos, no? Pero sa Google Docs: usa ra ka file. Tanan nag-edit sa same one. Real-time pa. Walay confusion kung asa ang latest. Mao gyud na ang shared database logic."</p>
+    <p>"Make sense? Alright. Now let's see what integration looks like when it actually runs."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 10 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 10 — Integration in Action</div>
+
+  <div class="stage">[Shows Slide 10]</div>
+  <div class="talk">
+    <p>"Okay, let's trace a real example. Company buys 100 bags of rice from a supplier. Watch what happens inside the ERP."</p>
+    <p>"Step one: Purchase Order created. That's Procurement. Step two: Goods received. Inventory goes up by 100. Step three: Payable created in Finance. Meaning, na-record na nga utang ang company sa supplier for that amount. Step four: Stock updated as available for sale."</p>
+  </div>
+
+  <div class="talk">
+    <p>"So... one event. We bought rice. Pero four things happened. Across three modules. Ug ang best part? <strong>Automatic tanan.</strong> Walay nag-text sa accounting 'Uy, nag-receive mi ha, i-record ninyo.' Walay manually nag-update sa stock count. Ang system mismo ang nag-propagate sa effects."</p>
+    <p>"Ug sa table, isa pa: customer buys 10 cases of tuna. Inventory goes down by 10. Finance creates Accounts Receivable. Again: one event, multiple connected effects."</p>
+  </div>
+
+  <div class="talk">
+    <p>"You know what this reminds me of? Dominoes. Gi-push nimo ang first domino... ug ang rest automatic na mag-tumba. One push, chain reaction. Mao na ang integration. Without ERP? Ikaw ang mag-push sa matag domino one by one. Ug if ma-forget ka ug usa? That's where errors come in."</p>
+  </div>
+
+  <div class="stage">[Quick check]</div>
+  <div class="talk">
+    <p>"Question: without ERP, pila ka beses i-encode ang purchase of 100 bags of rice?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Response] Yep, at least 2-3 times. Procurement records it. Inventory records it. Accounting records it. Ug matag time nag-encode, naay chance of typo. With ERP? Once ra. Ang rest... automatic. Okay, let's see the full before-and-after."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 11 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 11 — Before vs. After</div>
+
+  <div class="stage">[Shows Slide 11]</div>
+  <div class="talk">
+    <p>"Quick scan sa table. Data entry: before, 2-3 times; after, once. Reports: before, days; after, on demand. Accuracy: before, conflicting; after, one truth. Traceability: before, hard; after, full audit trail. Speed: before, waiting for paper; after, digital. Visibility: before, each department blind; after, cross-department dashboard."</p>
+    <p>"Six areas, tanan improved. Not just one thing gets better. Everything. Ug mao na ang reason businesses are willing to spend money even though ERP isn't free. The improvement is across the board."</p>
+    <p>"Now, before we get too excited, let me clarify what ERP is NOT. Because I don't want anyone to have wrong expectations."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 12 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 12 — What ERP is NOT</div>
+
+  <div class="stage">[Shows Slide 12]</div>
+  <div class="talk">
+    <p>"Four misconceptions. Not just accounting software — accounting is one piece lang, ERP is way broader. Not just for big companies — naa nay free options like Odoo, even small businesses can start. Not magic — if guba ang data ug dili trained ang tao, ERP won't save you. And lastly, not one brand — ERP is the concept. SAP, Oracle, Odoo, ERPNext... those are different brands implementing the same concept."</p>
+    <p>"It's like... transportation is a concept. Toyota, Honda, Suzuki are brands. Dili tanan Toyota, pero tanan transportation. Same logic: ERP is the idea. The brands just implement it differently."</p>
+    <p>"Alright. So if ERP is more than just accounting, unsa gyud ang full coverage? Let me show you."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 13 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 13 — Module Scope</div>
+
+  <div class="stage">[Shows Slide 13]</div>
+  <div class="talk">
+    <p>"Eight modules ang typical coverage. Finance, Sales, Procurement, Inventory, Production, HR, CRM, Reporting."</p>
+    <p>"Ug tan-awa below how they connect. If customer orders: Sales, Inventory, ug Finance involved. If company buys from supplier: Procurement, Inventory, Finance. Payroll runs: HR, Payroll, Finance. Factory produces: Production, Inventory, Cost Accounting."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Notice something? Finance is in every single row. Nganong? Because almost anything na mahitabo sa business, naay financial effect. Sale? Revenue. Purchase? Expense. Payroll? Cash out. So Finance is like... the nervous system. Whatever you do, naay signal na maabot didto."</p>
+  </div>
+
+  <div class="stage">[Quick engagement]</div>
+  <div class="talk">
+    <p>"Challenge: think of another business event ug which modules it would touch. Type sa chat."</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Reads] 'New employee hired — HR and Finance.' Yes! Because naay payroll expense. [Another] 'Product returned — Sales, Inventory, Finance.' Perfect. See? Everything connects. Nindot. Let's continue."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 14 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 14 — Business Value</div>
+
+  <div class="stage">[Shows Slide 14]</div>
+  <div class="talk">
+    <p>"So why invest? Six reasons. Efficiency — less duplicate work. Visibility — see everything without waiting. Control — workflows, approvals, audit trails. Better decisions — data you can trust. Scalability — grows with you. Compliance — BIR-ready, SEC-ready, audit-ready records."</p>
+    <p>"And class, notice: kini ang exact mirror sa six problems earlier. Problem was duplication? Answer is efficiency. Problem was conflicting data? Answer is visibility. One-to-one. ERP literally exists to solve each of those problems."</p>
+    <p>"Okay, let me give you quick Philippine context."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 15 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 15 — Philippine Context</div>
+
+  <div class="stage">[Shows Slide 15]</div>
+  <div class="talk">
+    <p>"Diri sa Pilipinas: large corporations like Jollibee, SM, San Miguel — full ERP na sila. Medium businesses — transitioning. Small businesses ug cooperatives — cloud and open-source ERP is now within reach. Government — PhilGEPS for procurement, eNGAS for accounting."</p>
+    <p>"So dili ni 'for abroad lang' ha. Diri sa ato, ginagamit na. Ug with tools like Odoo na free ang community edition, even a small chain of stores could technically start. Relevant na siya sa all levels."</p>
+    <p>"Ug for a more vivid local example..."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 16 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 16 — Tuna Canning</div>
+
+  <div class="stage">[Shows Slide 16]</div>
+  <div class="talk">
+    <p>"Tuna canning here in GenSan. Let's compare. Raw material receipt: without ERP, logbook sa dock. With ERP, auto-recorded plus updates stock ug payables. Production planning: without, based on last week's estimate. With, based on current orders and real-time stock. Quality: without, paper in cabinet. With, linked to batch number, traceable. Export docs: without, manually prepared per shipment. With, generated from data. Financial reporting: without, month-end. With, anytime."</p>
+    <p>"Every row: left side is slow and manual, right side is fast and automated. And kini diri ra gyud sa ato ha. GenSan is the tuna capital. These are real operations happening in our own community."</p>
+    <p>"Alright, quickly: who benefits?"</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 17 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 17 — Who Benefits</div>
+
+  <div class="stage">[Shows Slide 17]</div>
+  <div class="talk">
+    <p>"Top management gets dashboards ug KPIs. Middle management gets reports ug alerts. Staff gets transaction tools — create PO, process receipt, encode order. External like auditors get compliance-ready records."</p>
+    <p>"So dili para sa boss lang. Everyone from CEO to clerk to auditor gets what they need. Different views, same source."</p>
+    <p>"But... before we get carried away, let me give you the honest truth."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 18 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 18 — Reality Check</div>
+
+  <div class="stage">[Shows Slide 18]</div>
+  <div class="talk">
+    <p>"ERP only works if these are present. Clean data — because garbage in, garbage out. Trained users — people must know how to use it. Management commitment — leaders must actually look at the outputs and make decisions from them. Well-defined processes — because if your process is already broken, ERP will just automate the broken process. And ongoing maintenance."</p>
+    <p>"Bottom line: Technology is the tool. People and processes determine success."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Think of it this way: gym membership. Ang gym... dili ka mag-fit. Ang pag-workout sa gym mao ang mag-fit sa imo. Same: ERP alone won't fix a business. Using ERP properly — with discipline, with good data, with trained people — that's what creates the results. The system is just the tool. You're still the main character."</p>
+    <p>"Gets? Alright, let's wrap up."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 19 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 19 — Summary</div>
+
+  <div class="stage">[Shows Slide 19]</div>
+  <div class="talk">
+    <p>"Two cards. What ERP is: integrated system, shared database, real-time, cross-functional. Why it matters: eliminates silos, better decisions, improved control, supports growth."</p>
+    <p>"If kana lang duha ang ma-remember ninyo... solid na ang Session 1. Everything else is detail. Core: integration ug value."</p>
+    <p>"Let's do a quick check."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 20 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 20 — Check Understanding</div>
+
+  <div class="stage">[Shows Slide 20]</div>
+  <div class="talk">
+    <p>"Five questions diri. Let me ask two verbally."</p>
+    <p>"[Name], what is ERP in one sentence?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[If good] Nice! Exactly. [If partial] Close! Just add: 'through a shared database.' Then complete na."</p>
+    <p>"[Name], give me one example of integration."</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Response] Perfect. Purchase affects procurement, inventory, ug finance. Three modules, one event. That's integration."</p>
+    <p>"Great job everyone. Session 1 done. Next time, we talk about how ERP got here — the evolution from the 1960s to today. It's a great story actually. You'll see why the system is designed the way it is."</p>
+    <p>"Wala nay last questions? ... Alright. Salamat sa time ninyo class. Rest well ug see you next session. Take care!"</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="session-break">
+  <h2>Session 2: Evolution of ERP Systems</h2>
+  <p>15 slides · ~60 minutes</p>
+</div>
+<!-- ══════════════════════════════════════════════════════ -->
+
+<div class="slide-section">
+  <div class="slide-heading">Opening</div>
+
+  <div class="stage">[Screen shared, camera on]</div>
+  <div class="talk">
+    <p>"Hello class, welcome back! Screen okay? Audio okay? Quick thumbs up."</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"Alright, good. So last time, we answered the question: What is ERP? Today, different question: <strong>How did it get here?</strong> Because ERP didn't just pop out of nowhere one day. There's a story. And the cool thing is, the story explains why the system is designed the way it is. Let's go."</p>
+  </div>
+
+  <div class="stage">[Shows Slide 21]</div>
+</div>
+
+<!-- SLIDE 21 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 21 — Title</div>
+
+  <div class="stage">[Shows title]</div>
+  <div class="talk">
+    <p>"The Evolution of ERP Systems. How business pain drove system development from 1960s material planning to modern cloud platforms."</p>
+    <p>"Key phrase there: business pain <em>drove</em> development. Meaning, technology didn't just evolve because someone felt like upgrading. Specific problems forced each new version to exist. If we understand the pain, we understand the design. That's our lens today. Let's look at objectives."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 22 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 22 — Objectives</div>
+
+  <div class="stage">[Shows Slide 22]</div>
+  <div class="talk">
+    <p>"Five goals. Trace the history. Identify the limitation that drove each stage. Differentiate five stages by scope. Explain why integration expanded. And relate it to Philippine adoption."</p>
+    <p>"Keyword for today: <strong>limitation</strong>. Every stage ended because it hit a ceiling. The next stage? That was the response. Once you get that pattern, the whole timeline becomes very logical. Sige, let's see the big picture."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 23 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 23 — Timeline</div>
+
+  <div class="stage">[Shows five-node timeline]</div>
+  <div class="talk">
+    <p>"Here's the full story in one slide. Five stages. 1960s: MRP, Material Requirements Planning. 1980s: MRP II, Manufacturing Resource Planning. 1990s: ERP, Enterprise Resource Planning. 2000s: ERP II, Extended ERP. 2010s to now: Cloud ERP."</p>
+    <p>"And the box below says: each stage emerged because the previous one could not handle expanding business complexity."</p>
+  </div>
+
+  <div class="talk">
+    <p>"So basically... MRP was too narrow. MRP II was factory-only. ERP was internally focused. ERP II was still expensive. Cloud made it accessible. Every jump is a response to a limitation."</p>
+    <p>"And you know what this reminds me of? Phones. Landline: can call only. Cellphone: call and text. Smartphone: everything. Wala'y nag-decide 'okay, stop na ta diri sa landline.' Ang demand sa people forced the next version. Same exact pattern sa ERP."</p>
+  </div>
+
+  <div class="stage">[Engages]</div>
+  <div class="talk">
+    <p>"Looking at this timeline, unsa ang pattern? Quick, type sa chat."</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Reads] 'Scope expands.' Exactly. Every generation, bigger scope. Bigger coverage. Because the business needed more. Alright, let's deep dive each one. Starting from 1960s."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 24 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 24 — MRP</div>
+
+  <div class="stage">[Shows MRP slide]</div>
+  <div class="talk">
+    <p>"MRP, 1960s. Purpose: calculate what materials are needed, how many, and when. Input: production schedule, bill of materials, inventory levels. Output: planned purchase orders. Benefit: reduced stockouts and excess."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Okay so what's going on here. Before MRP, ang mga factory workers nag-guess. 'Mga pila kaha ang atong i-order?' Based sa hunch, sa past experience, sa feeling. MRP replaced that with actual computation. You tell the system 'I need 1,000 units,' ug gi-calculate niya exactly: which materials, how many, when to order. Precise, dili feeling-feeling."</p>
+  </div>
+
+  <div class="talk">
+    <p>"But then there's the limitation: assumed unlimited capacity. Meaning, wala siya gi-check kung kaya ba sa machines, kaya ba sa workers, enough ba ang time. Gi-assume lang nga infinite. Which... obviously dili tinuod sa real life."</p>
+    <p>"Like... imagine a meal planner app na mo-tell sa imo: 'Buy exactly these ingredients for 50 guests.' Okay, tama ang ingredients. But... did it check if kasya ba sa imong kitchen? Pila ka stove ang available? Pila ka hours imong time? No. So the ingredients are correct pero you might not finish cooking on time. Same idea."</p>
+  </div>
+
+  <div class="stage">[Quick check]</div>
+  <div class="talk">
+    <p>"Why is assuming unlimited capacity a problem?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Response] Right. Plans become unrealistic. You commit to something you physically can't deliver. And that gap... is what MRP II fixed. But first, the formula in action."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 25 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 25 — BOM Example</div>
+
+  <div class="stage">[Shows tuna canning BOM table]</div>
+  <div class="talk">
+    <p>"Local example. Tuna factory, needs 1,000 cases. Let's see per component. Tuna meat: need 12,000 kg, on hand 3,000, so order 9,000. Tin cans: need 24,000, have 10,000, order 14,000. Labels: need 24,000, have 24,000... zero to order. Sufficient na. Cartons: need 1,000, have 200, order 800."</p>
+    <p>"Formula is: Net = Gross minus what's on hand. Simple. Pero imagine doing this manually for hundreds of products, matag product naay dozens of components. Mag-calculator ka sa tibuok adlaw. Prone sa error. MRP automated that."</p>
+  </div>
+
+  <div class="talk">
+    <p>"And notice the labels row: sufficient na, zero to order. Without MRP, possible naay worker na mag-order gihapon 'just in case, para safe.' That's over-ordering. Wasted money sitting in storage. MRP prevents that: order only what's actually short. Nothing more."</p>
+    <p>"Alright, so MRP handled materials beautifully. But factories have machines, workers, time constraints. Mao na ang MRP II."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 26 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 26 — MRP II</div>
+
+  <div class="stage">[Shows MRP II slide]</div>
+  <div class="talk">
+    <p>"MRP II, 1980s. Extended to include machine capacity, labor, shop floor control, basic costing. The question changed from 'what materials do we need' to 'can we actually produce this, and at what cost?'"</p>
+  </div>
+
+  <div class="talk">
+    <p>"Big improvement: dili na blind sa capacity. Now the system knows if a plan is realistic. But — and kini important — still factory lang. Sales department? Not covered. Full accounting? Not included. HR? Nope. Everything outside the factory walls? Still separate. Still silos."</p>
+    <p>"Ang meal planner app upgraded: now checks kitchen capacity and gas cost. Better! But still doesn't handle ang budget sa whole household or ang schedule sa whole family. Kitchen scope ra gihapon."</p>
+    <p>"And that factory-only limitation... is what caused the biggest jump ever."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 27 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 27 — ERP (1990s)</div>
+
+  <div class="stage">[Shows ERP slide]</div>
+  <div class="talk">
+    <p>"ERP. 1990s. The big leap. Now it covers ALL major business functions. Finance, Sales, HR, Procurement, everything. One platform. Shared database. No longer factory-only."</p>
+  </div>
+
+  <div class="talk">
+    <p>"Class, kini ang moment nga na-born ang concept we defined last session. Before this, it was manufacturing systems. After this? It's an enterprise system. Tibuok organization na, dili factory lang. That's a massive shift."</p>
+    <p>"But it still had limits: internally focused. No internet, no connection to customers or suppliers online. Plus expensive: millions of pesos and years to implement. So..."</p>
+  </div>
+
+  <div class="stage">[Quick check]</div>
+  <div class="talk">
+    <p>"In one sentence: difference between MRP II and ERP?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Response] 'MRP II is manufacturing only, ERP is entire enterprise.' Perfect. That's it. Scope is the differentiator. Let's keep going — why the 1990s specifically?"</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 28 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 28 — Why the 1990s</div>
+
+  <div class="stage">[Shows context slide]</div>
+  <div class="talk">
+    <p>"Two sides converged. Tech side: client-server computing, databases, LANs, GUIs all matured. Business side: globalization, competition, Y2K forced upgrades, process reengineering was trending."</p>
+    <p>"Both had to be ready. And in the 90s, both were. Y2K alone forced companies to replace aging systems. Instead of just patching, they jumped to ERP. Perfect timing."</p>
+    <p>"By 2000s, internet changed everything. ERP needed to open up."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 29 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 29 — ERP II</div>
+
+  <div class="stage">[Shows ERP II slide]</div>
+  <div class="talk">
+    <p>"ERP II, 2000s. Internet-enabled. Focus shifts: internal plus external. Suppliers can now check your inventory. Customers can track their order online. The system opens up to the outside world."</p>
+    <p>"It's like upgrading from a family-only GC to one where your supplier ug customer can see relevant parts. Not everything ha, just the stuff that matters to them. Selective sharing."</p>
+    <p>"And the final one: Cloud."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 30 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 30 — Cloud ERP</div>
+
+  <div class="stage">[Shows Cloud ERP slide]</div>
+  <div class="talk">
+    <p>"Cloud ERP, 2010s to now. Delivered as a service. Provider manages everything: software, servers, updates. You subscribe, log in through browser or app, done."</p>
+    <p>"Advantages: lower cost because subscription instead of millions upfront. Scalable. Anywhere access. Fast to deploy."</p>
+    <p>"Concerns: internet dependency. Data with provider. Ongoing cost. Customization limits."</p>
+  </div>
+
+  <div class="talk">
+    <p>"And this is the game-changer for accessibility. Before: ERP meant huge budget, own server room, years of setup. Now? Subscribe for maybe 1,500 pesos per user per month. Deploy in weeks. Access from your phone. Even Philippine SMEs can start."</p>
+    <p>"Netflix analogy. Before: buy DVDs. Expensive, takes space, you maintain. Now: 549 a month, stream everything, they handle updates. Same shift happened with ERP."</p>
+  </div>
+
+  <div class="stage">[Engages]</div>
+  <div class="talk">
+    <p>"Biggest concern for Cloud ERP here sa Mindanao? Quick."</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Chat] 'Internet.' Yep. If brownout ang connection, dili ma-access. That's the trade-off. When stable, great. When not, problematic. That's why hybrid models exist for some orgs. Okay, let's compare all five together."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 31 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 31 — Full Comparison</div>
+
+  <div class="stage">[Shows comparison table]</div>
+  <div class="talk">
+    <p>"All five, side by side. Focus on two rows. Scope: Materials, Manufacturing, Entire enterprise, Enterprise plus partners, Everything anywhere. That's the story. And Cost: notice Cloud says 'Subscription.' That's the accessibility breakthrough."</p>
+    <p>"Two rows, entire evolution explained. Expanding capability ug expanding accessibility at the same time."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 32 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 32 — Bar Chart</div>
+
+  <div class="stage">[Shows bar chart]</div>
+  <div class="talk">
+    <p>"Visual version. MRP: tiny bar, materials only. MRP II: bigger, manufacturing. ERP: big jump, all internal. ERP II: larger, external included. Cloud: almost full."</p>
+    <p>"Visually obvious: every generation, ang bar gets bigger. Biggest jump? MRP II to ERP. That's when it went from factory-only to enterprise-wide. Revolutionary."</p>
+    <p>"And ang highlight box: systems evolve because organizations evolve. Business pain drives technology. Not the reverse."</p>
+    <p>"If that's ever on an exam: 'Why did ERP evolve?' — point to this. Each generation hit a ceiling. Businesses needed more. New generation was born. That's the answer."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 33 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 33 — Philippine Context</div>
+
+  <div class="stage">[Shows PH table]</div>
+  <div class="talk">
+    <p>"Where's the Philippines? Large corporations: advanced, ERP II or Cloud. Medium: transitioning. MSMEs: many still manual, cloud is the entry point. Government: mixed systems. LGUs: varied."</p>
+    <p>"Multiple points on the timeline simultaneously. Big companies advanced na. Small ones starting. But trend is forward. DICT, DTI pushing. Cloud tools making it affordable."</p>
+    <p>"So why should you, as IS students, care about this history?"</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 34 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 34 — Key Takeaway</div>
+
+  <div class="stage">[Shows takeaway]</div>
+  <div class="talk">
+    <p>"Two reasons. One: understanding the 'why' behind features helps you evaluate systems intelligently. 'Why does this module exist? Ah, because of this historical problem.' Two: the pattern predicts the future. Systems keep expanding. What's next? AI-powered ERP. IoT integration. Industry-specific platforms. And you'll be the ones building or implementing those."</p>
+    <p>"And the bottom line: systems evolve because organizations evolve. If you ever work in ERP... always start with the business need. Never with the technology. Ask 'What does this business need?' before 'What can this software do?' That mindset will take you far."</p>
+  </div>
+
+  <div class="stage">[Clicks next slide]</div>
+</div>
+
+<!-- SLIDE 35 -->
+<div class="slide-section">
+  <div class="slide-heading">Slide 35 — Check &amp; Close</div>
+
+  <div class="stage">[Shows questions]</div>
+  <div class="talk">
+    <p>"Five questions. Let me pick two. [Name], what was MRP's main limitation?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Response] Exactly. Assumed unlimited capacity. Didn't check machines, labor, or finances. Good."</p>
+    <p>"[Name], what makes Cloud ERP accessible to small businesses?"</p>
+  </div>
+
+  <div class="stage">[Waits]</div>
+  <div class="talk">
+    <p>"[Response] Right. Subscription model, no big upfront cost, no need for servers, browser access. Affordable."</p>
+    <p>"Nice work everyone. That's Session 2 done. We've now covered WHAT ERP is and HOW it evolved. Next time, Week 2: how ERP is technically built. Three-tier architecture and deployment models. Very practical — you'll start thinking like system evaluators."</p>
+    <p>"Any last questions? ... All good? Alright. Salamat class. See you next time. Take care!"</p>
+  </div>
+
+  <div class="stage">[Waves, ends meeting]</div>
+</div>
+
+</div>
+</body>
+</html>
