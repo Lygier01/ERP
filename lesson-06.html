@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="description" content="ERP Week 4 Session 7">
+<title>ERP Week 4 Session 7</title>
+<style>
+:root {
+  --background: #fafafa;
+  --foreground: #1a1a1a;
+  --accent: #ff5722;
+  --accent-strong: #db3d0d;
+  --accent-soft: rgba(255,87,34,.075);
+  --card: #ffffff;
+  --muted: #5f6b7a;
+  --border: rgba(26,26,26,.105);
+  --success: #197a64;
+  --blue: #245d91;
+  --gold: #9a6400;
+  --purple: #6941c6;
+  --rose: #9d174d;
+  --shadow: 0 18px 60px rgba(0,0,0,.13);
+  --display: 'Archivo', 'Arial Black', 'Segoe UI', sans-serif;
+  --body: 'Space Grotesk', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: #171717;
+  color: var(--foreground);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+button { font: inherit; }
+#stage {
+  width: 1920px;
+  height: 1080px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  background: var(--background);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 72px 88px 118px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 78% 18%, rgba(255,87,34,.065), transparent 42%),
+    linear-gradient(145deg, #fafafa 0%, #f5f2ef 46%, #fafafa 100%);
+}
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,26,26,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,26,26,.026) 1px, transparent 1px);
+  background-size: 160px 160px;
+  pointer-events: none;
+}
+.slide.active { display: flex; }
+.slide > * { position: relative; z-index: 1; }
+.hero { justify-content: center; padding-bottom: 120px; }
+.hero.network::after {
+  content: '';
+  position: absolute; right: 110px; top: 110px; width: 560px; height: 560px;
+  border-radius: 50%; border: 20px solid rgba(255,87,34,.08);
+  box-shadow: 0 0 0 58px rgba(255,87,34,.04), 0 0 0 118px rgba(255,87,34,.02);
+}
+.hero.map::after {
+  content: '';
+  position: absolute; right: 98px; top: 118px; width: 620px; height: 420px;
+  border-radius: 32px; background: linear-gradient(135deg, rgba(255,87,34,.12), rgba(36,93,145,.08));
+  transform: rotate(-7deg);
+  box-shadow: 0 0 0 18px rgba(255,255,255,.5), 0 24px 40px rgba(0,0,0,.05);
+}
+.section-number {
+  position: absolute; top: 44px; right: 82px; font-family: var(--display); font-weight: 900;
+  font-size: 180px; line-height: 1; color: rgba(255,87,34,.065);
+}
+.eyebrow {
+  color: var(--accent); font-size: 20px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .11em; margin-bottom: 18px;
+}
+h1, h2, h3 { font-family: var(--display); }
+h1 { font-size: 92px; line-height: 1.02; letter-spacing: -.035em; font-weight: 900; max-width: 1350px; }
+h2 { font-size: 52px; line-height: 1.09; letter-spacing: -.022em; font-weight: 850; max-width: 1560px; }
+h3 { font-size: 29px; line-height: 1.17; font-weight: 800; }
+p, li, td { font-size: 22px; line-height: 1.42; }
+.lede { margin-top: 20px; color: var(--muted); font-size: 29px; max-width: 1120px; }
+.small { font-size: 18px !important; color: var(--muted); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 28px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 26px; }
+.card {
+  background: rgba(255,255,255,.95); border: 1px solid var(--border); padding: 24px 26px;
+  position: relative; min-height: 128px; box-shadow: 0 8px 24px rgba(0,0,0,.035);
+}
+.card h3 { margin-bottom: 10px; }
+.card p, .card li { font-size: 20px; color: #424a54; }
+.card-number { position: absolute; right: 18px; top: 12px; font-family: var(--display); color: rgba(255,87,34,.17); font-size: 44px; font-weight: 900; }
+.definition { margin-top: 24px; background: rgba(255,87,34,.045); border-left: 6px solid var(--accent); padding: 24px 30px; }
+.definition .label { color: var(--accent); font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 8px; }
+.definition p { font-size: 26px; font-weight: 540; }
+.bullets { list-style: none; margin-top: 24px; display: grid; gap: 12px; }
+.bullets li { padding: 10px 16px 10px 38px; border-bottom: 1px solid var(--border); position: relative; }
+.bullets li::before { content: ''; position: absolute; left: 4px; top: 22px; width: 13px; height: 13px; background: var(--accent); }
+.callout { margin-top: 22px; background: var(--accent); color: #fff; padding: 22px 30px; }
+.callout p { font-size: 23px; color: rgba(255,255,255,.95); }
+.callout h3 { margin-bottom: 8px; }
+.caption { margin-top: 10px; color: var(--muted); font-size: 18px; }
+.table-wrap { margin-top: 22px; border: 1px solid var(--border); background: rgba(255,255,255,.93); overflow: hidden; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+th { color: var(--accent-strong); background: rgba(255,87,34,.04); font-size: 16px; text-transform: uppercase; letter-spacing: .055em; }
+tr:last-child td { border-bottom: 0; }
+.compact td { font-size: 18px; padding: 10px 12px; }
+.compact th { font-size: 14px; padding: 10px 12px; }
+.pill { display: inline-block; padding: 4px 10px; background: var(--accent-soft); color: var(--accent-strong); font-size: 16px; font-weight: 800; border-radius: 99px; }
+.info-strip { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+.info-chip { background: rgba(255,87,34,.07); border: 1px solid rgba(255,87,34,.25); color: var(--accent-strong); font-size: 18px; font-weight: 800; padding: 9px 14px; }
+.visual-panel {
+  margin-top: 24px; background: rgba(255,255,255,.96); border: 1px solid var(--border); padding: 18px;
+  min-height: 390px; display: grid; place-items: center; box-shadow: 0 8px 24px rgba(0,0,0,.035); position: relative;
+}
+.visual-panel.tall { min-height: 470px; }
+.visual-panel svg { width: 100%; height: 100%; max-height: 470px; }
+.zoomable { cursor: zoom-in; }
+.zoom-note { position: absolute; right: 18px; bottom: 14px; font-size: 15px; color: var(--muted); background: rgba(255,255,255,.82); padding: 4px 9px; border: 1px solid var(--border); }
+.fragment { opacity: 0; transform: translateY(18px); transition: opacity .42s ease, transform .42s ease; }
+.fragment.shown, .slide.entered .reveal { opacity: 1; transform: translateY(0); }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .55s ease, transform .55s ease; }
+.slide.entered .d2 { transition-delay: .08s; }
+.slide.entered .d3 { transition-delay: .16s; }
+.slide.entered .d4 { transition-delay: .24s; }
+.slide.entered .d5 { transition-delay: .32s; }
+.summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+.summary-card { background: #fff; border-top: 7px solid var(--accent); padding: 26px; min-height: 230px; box-shadow: 0 8px 24px rgba(0,0,0,.035); }
+.summary-card p { margin-top: 12px; color: #424a54; }
+.footer-tag { position: absolute; bottom: 38px; left: 88px; font-size: 16px; color: var(--muted); }
+.slide-tag { position: absolute; bottom: 38px; right: 88px; font-size: 16px; color: rgba(26,26,26,.35); font-weight: 800; }
+.split { display: grid; grid-template-columns: 1.1fr .9fr; gap: 24px; margin-top: 26px; }
+.split.equal { grid-template-columns: 1fr 1fr; }
+.flow-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch; margin-top: 26px; }
+.flow-step { flex: 1 1 0; min-width: 170px; background: rgba(255,255,255,.95); border: 1px solid var(--border); padding: 20px 18px; position: relative; box-shadow: 0 8px 24px rgba(0,0,0,.035); }
+.flow-step .num { font-size: 15px; color: var(--accent-strong); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.flow-step h3 { font-size: 24px; margin-top: 8px; margin-bottom: 8px; }
+.flow-arrow { align-self: center; color: var(--accent); font-size: 28px; font-weight: 900; margin: 0 -4px; }
+.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 26px; }
+.photo-card { background: #fff; border: 1px solid var(--border); box-shadow: 0 10px 26px rgba(0,0,0,.04); overflow: hidden; }
+.photo-head { padding: 16px 20px; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.photo-head.before { background: rgba(157,23,77,.09); color: var(--rose); }
+.photo-head.after { background: rgba(25,122,100,.11); color: var(--success); }
+.photo-art { height: 240px; border-bottom: 1px solid var(--border); display: grid; place-items: center; background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(245,242,239,.8)); }
+.photo-card .card-body { padding: 20px 22px 22px; }
+.mosaic { display: grid; grid-template-columns: 1.3fr .7fr; gap: 24px; margin-top: 28px; }
+.stack { display: grid; gap: 18px; }
+.band { margin-top: 24px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.band .mini { background: #fff; border: 1px solid var(--border); padding: 16px 14px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,.03); }
+.band .mini h3 { font-size: 20px; margin-bottom: 6px; }
+.band .mini p { font-size: 17px; }
+.legend { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 10px; font-size: 17px; color: var(--muted); }
+.legend span::before { content: ''; display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 50%; vertical-align: middle; }
+.legend .l1::before { background: var(--accent); }
+.legend .l2::before { background: var(--blue); }
+.legend .l3::before { background: var(--success); }
+.legend .l4::before { background: var(--purple); }
+#chrome { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+#progressTrack { position: absolute; left: 0; right: 0; top: 0; height: 5px; background: rgba(255,255,255,.18); }
+#progressBar { height: 100%; width: 0; background: var(--accent); transition: width .28s ease; }
+#controls { position: absolute; right: 28px; bottom: 22px; display: flex; gap: 10px; pointer-events: auto; }
+.control-btn { border: 1px solid rgba(255,255,255,.28); background: rgba(20,20,20,.62); color: #fff; padding: 10px 16px; border-radius: 999px; font-size: 15px; font-weight: 800; cursor: pointer; backdrop-filter: blur(8px); }
+.control-btn.primary { background: var(--accent); border-color: var(--accent); }
+.control-btn:disabled { opacity: .36; cursor: not-allowed; }
+#dots { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); display: flex; gap: 8px; pointer-events: auto; }
+.dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(255,255,255,.6); background: rgba(255,255,255,.16); cursor: pointer; }
+.dot.active { background: var(--accent); border-color: var(--accent); transform: scale(1.18); }
+#status { position: absolute; left: 28px; bottom: 26px; color: rgba(255,255,255,.7); font-size: 13px; letter-spacing: .02em; }
+#orientationHint { display: none; position: fixed; left: 50%; top: 16px; transform: translateX(-50%); z-index: 100; background: var(--accent); color: #fff; padding: 10px 14px; border-radius: 99px; font-size: 14px; font-weight: 800; }
+#modal { position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,.76); display: none; align-items: center; justify-content: center; padding: 46px; }
+#modal.open { display: flex; }
+#modalContent { background: #fff; width: min(92vw, 1560px); max-height: 88vh; padding: 28px; overflow: auto; box-shadow: var(--shadow); }
+#modalContent svg { width: 100%; height: auto; max-height: 78vh; }
+#modalClose { position: absolute; top: 20px; right: 24px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--accent); color: #fff; font-size: 28px; font-weight: 800; cursor: pointer; }
+@media (max-aspect-ratio: 1/1) { #orientationHint { display: block; } }
+@media (max-width: 900px), (max-height: 520px) { #status { display: none; } .control-btn { padding: 9px 12px; } #dots { bottom: 74px; } }
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<main id="stage" aria-live="polite">
+<section class="slide hero network" id="slide-1" data-title="ERP Ecosystem: Vendors, Open-Source Options, and the Philippine Context" aria-hidden="true">
+  <div class="section-number">07</div>
+  <div class="eyebrow reveal">Week 4 · Session 7</div>
+  <h1 class="reveal d2">ERP Ecosystem:<br>Vendors, Open-Source Options,<br>and the Philippine Context</h1>
+  <p class="lede reveal d3">How ERP platforms, implementation partners, infrastructure choices, and local business conditions shape ERP adoption and use</p>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">1 / 15</div>
+</section>
+<section class="slide" id="slide-2" data-title="Intended Learning Outcomes" aria-hidden="true">
+  <div class="eyebrow reveal">CLO 1 · ERP concepts and market context</div>
+  <h2 class="reveal d2">By the end of this session, you should be able to:</h2>
+  <ul class="bullets reveal d3">
+    <li>Identify major commercial ERP vendors and open-source ERP alternatives commonly discussed in the market.</li>
+    <li>Differentiate commercial and open-source ERP options in terms of ownership, flexibility, support, and cost structure.</li>
+    <li>Describe the wider ERP ecosystem, including vendors, implementation partners, cloud providers, and client organizations.</li>
+    <li>Explain how Philippine organizational conditions influence ERP adoption choices.</li>
+    <li>Evaluate key considerations that guide ERP platform selection and long-term use.</li>
+  </ul>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">2 / 15</div>
+</section>
+<section class="slide" id="slide-3" data-title="What Makes Up the ERP Ecosystem" aria-hidden="true">
+  <div class="eyebrow reveal">Lesson context</div>
+  <h2 class="reveal d2">ERP is not only software; it is an ecosystem of providers, partners, users, and supporting services.</h2>
+  <div class="visual-panel zoomable reveal d3" aria-label="ERP ecosystem network diagram">
+    <svg viewBox="0 0 1500 460" role="img" aria-label="ERP ecosystem network with platform, partners, cloud, organization, and governance">
+      <defs><marker id="ecoA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ff5722"/></marker></defs>
+      <circle cx="750" cy="230" r="105" fill="#ff5722" opacity="0.95"/>
+      <text x="750" y="218" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#fff">ERP</text>
+      <text x="750" y="258" text-anchor="middle" font-family="Arial" font-size="22" fill="#fff">core platform</text>
+      <rect x="140" y="70" width="260" height="110" rx="18" fill="#fff" stroke="#1a1a1a"/>
+      <text x="270" y="116" text-anchor="middle" font-family="Arial" font-size="28" font-weight="700">Vendors</text>
+      <text x="270" y="148" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">product roadmap · licensing · updates</text>
+      <rect x="1120" y="70" width="260" height="110" rx="18" fill="#eef5fb" stroke="#245d91"/>
+      <text x="1250" y="116" text-anchor="middle" font-family="Arial" font-size="28" font-weight="700">Cloud / Infrastructure</text>
+      <text x="1250" y="148" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">hosting · scalability · availability</text>
+      <rect x="110" y="280" width="300" height="120" rx="18" fill="#fff7f3" stroke="#ff5722"/>
+      <text x="260" y="328" text-anchor="middle" font-family="Arial" font-size="28" font-weight="700">Implementation Partners</text>
+      <text x="260" y="360" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">configuration · migration · training · support</text>
+      <rect x="1080" y="285" width="340" height="120" rx="18" fill="#f4fbf8" stroke="#197a64"/>
+      <text x="1250" y="332" text-anchor="middle" font-family="Arial" font-size="28" font-weight="700">Client Organization</text>
+      <text x="1250" y="364" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">people · processes · data · governance</text>
+      <rect x="575" y="28" width="350" height="84" rx="18" fill="#f6f1ff" stroke="#6941c6"/>
+      <text x="750" y="64" text-anchor="middle" font-family="Arial" font-size="26" font-weight="700">Policies, controls, and compliance</text>
+      <text x="750" y="88" text-anchor="middle" font-family="Arial" font-size="17" fill="#5f6b7a">security · roles · auditability · reporting rules</text>
+      <line x1="400" y1="125" x2="645" y2="200" stroke="#ff5722" stroke-width="5" marker-end="url(#ecoA)"/>
+      <line x1="1100" y1="125" x2="855" y2="200" stroke="#245d91" stroke-width="5" marker-end="url(#ecoA)"/>
+      <line x1="410" y1="335" x2="642" y2="256" stroke="#ff5722" stroke-width="5" marker-end="url(#ecoA)"/>
+      <line x1="1080" y1="338" x2="858" y2="258" stroke="#197a64" stroke-width="5" marker-end="url(#ecoA)"/>
+      <line x1="750" y1="112" x2="750" y2="125" stroke="#6941c6" stroke-width="5" marker-end="url(#ecoA)"/>
+    </svg>
+    <span class="zoom-note">Tap or click to enlarge</span>
+  </div>
+  <p class="caption">The ERP ecosystem combines technology providers, deployment services, support structures, governance mechanisms, and the organization that uses the system.</p>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">3 / 15</div>
+</section>
+<section class="slide" id="slide-4" data-title="Major Commercial ERP Vendors" aria-hidden="true">
+  <div class="eyebrow reveal">Commercial platform landscape</div>
+  <h2 class="reveal d2">Commercial ERP vendors usually emphasize scale, structured support, and managed product roadmaps.</h2>
+  <div class="grid-4">
+    <div class="card fragment"><div class="card-number">01</div><h3>SAP</h3><p>Widely associated with large-enterprise process depth, industry coverage, and tightly governed integrated workflows.</p></div>
+    <div class="card fragment"><div class="card-number">02</div><h3>Oracle</h3><p>Known for broad enterprise applications, database strength, and cloud-based enterprise management offerings.</p></div>
+    <div class="card fragment"><div class="card-number">03</div><h3>Microsoft Dynamics</h3><p>Often positioned for integration with familiar productivity ecosystems and flexible coverage across business segments.</p></div>
+    <div class="card fragment"><div class="card-number">04</div><h3>Mid-market suites</h3><p>Many organizations also evaluate sector-focused or mid-market platforms with narrower but more targeted functionality.</p></div>
+  </div>
+  <div class="info-strip reveal d4">
+    <div class="info-chip">Licensing and subscription models</div>
+    <div class="info-chip">Vendor-managed updates</div>
+    <div class="info-chip">Formal support structures</div>
+    <div class="info-chip">Partner implementation networks</div>
+  </div>
+  <div class="callout reveal d5"><p>Commercial ERP decisions are rarely based on software screens alone. They also involve roadmap confidence, support reach, and fit with organizational complexity.</p></div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">4 / 15</div>
+</section>
+<section class="slide" id="slide-5" data-title="Open-Source ERP Options" aria-hidden="true">
+  <div class="eyebrow reveal">Open-source alternatives</div>
+  <h2 class="reveal d2">Open-source ERP emphasizes configurable access to the platform while still requiring disciplined implementation and support.</h2>
+  <div class="split equal">
+    <div>
+      <div class="definition reveal d3"><div class="label">Meaning</div><p>Open-source ERP makes the software codebase available for inspection and adaptation, which can increase flexibility but also raises responsibility for governance, maintenance, and technical capability.</p></div>
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card fragment"><h3>Odoo</h3><p>Recognized for modular design, broad business-app coverage, and accessibility for growing organizations.</p></div>
+        <div class="card fragment"><h3>ERPNext</h3><p>Known for integrated core business functions and strong appeal for organizations seeking adaptable, community-oriented ERP.</p></div>
+      </div>
+    </div>
+    <div class="visual-panel reveal d4" style="min-height:420px;">
+      <svg viewBox="0 0 650 420" role="img" aria-label="Open source ERP characteristics">
+        <rect x="45" y="52" width="560" height="310" rx="24" fill="#fff" stroke="#1a1a1a"/>
+        <rect x="85" y="102" width="480" height="60" rx="14" fill="#fff7f3" stroke="#ff5722"/>
+        <text x="325" y="140" text-anchor="middle" font-family="Arial" font-size="28" font-weight="700">Visible platform structure</text>
+        <rect x="85" y="182" width="220" height="125" rx="18" fill="#eef5fb" stroke="#245d91"/>
+        <text x="195" y="222" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Flexibility</text>
+        <text x="195" y="254" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">configuration and extension</text>
+        <text x="195" y="279" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">can be more adaptable</text>
+        <rect x="345" y="182" width="220" height="125" rx="18" fill="#f4fbf8" stroke="#197a64"/>
+        <text x="455" y="222" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Responsibility</text>
+        <text x="455" y="254" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">hosting, updates, security,</text>
+        <text x="455" y="279" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">and support must be planned</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">5 / 15</div>
+</section>
+<section class="slide" id="slide-6" data-title="Commercial and Open-Source ERP Compared" aria-hidden="true">
+  <div class="eyebrow reveal">Comparison view</div>
+  <h2 class="reveal d2">Commercial and open-source ERP differ in governance style as much as in technology.</h2>
+  <div class="table-wrap reveal d3">
+    <table class="compact">
+      <thead><tr><th>Dimension</th><th>Commercial ERP</th><th>Open-Source ERP</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ownership model</strong></td><td>Controlled by a vendor with structured releases and formal licensing.</td><td>Codebase is open for use and adaptation within license terms.</td></tr>
+        <tr><td><strong>Support pattern</strong></td><td>Formal vendor and partner support channels.</td><td>Community support plus optional paid partner support.</td></tr>
+        <tr><td><strong>Flexibility</strong></td><td>Customization usually follows vendor-approved frameworks and limits.</td><td>Can be highly configurable but requires disciplined technical governance.</td></tr>
+        <tr><td><strong>Cost structure</strong></td><td>Licensing or subscription is more explicit and predictable.</td><td>Software access may be cheaper, but implementation and support remain real costs.</td></tr>
+        <tr><td><strong>Roadmap control</strong></td><td>Vendor determines product direction and release cadence.</td><td>Direction is shaped by community development and implementer capacity.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="caption">The choice is not “free versus expensive.” The real question is which governance, support, and capability model matches the organization.</p>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">6 / 15</div>
+</section>
+<section class="slide" id="slide-7" data-title="The ERP Support Chain" aria-hidden="true">
+  <div class="eyebrow reveal">Process map</div>
+  <h2 class="reveal d2">The ERP support chain shows how value moves from product design to day-to-day organizational use.</h2>
+  <div class="flow-row">
+    <div class="flow-step reveal"><div class="num">1 · Product source</div><h3>Platform vendor or open-source community</h3><p>Defines core capabilities, releases, and application structure.</p></div>
+    <div class="flow-arrow reveal d2">→</div>
+    <div class="flow-step reveal d2"><div class="num">2 · Delivery support</div><h3>Implementation partner</h3><p>Configures the system, maps processes, migrates data, and supports adoption.</p></div>
+    <div class="flow-arrow reveal d3">→</div>
+    <div class="flow-step reveal d3"><div class="num">3 · Runtime environment</div><h3>Hosting or infrastructure</h3><p>Provides servers, cloud services, storage, security, and performance capacity.</p></div>
+    <div class="flow-arrow reveal d4">→</div>
+    <div class="flow-step reveal d4"><div class="num">4 · Organizational use</div><h3>Client users and managers</h3><p>Apply ERP processes, maintain data quality, and use reports for operational control.</p></div>
+  </div>
+  <div class="callout reveal d5"><p>An ERP decision must consider the complete support chain. Strong software cannot compensate for weak implementation, training, or governance.</p></div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">7 / 15</div>
+</section>
+<section class="slide" id="slide-8" data-title="Decision Factors in ERP Selection" aria-hidden="true">
+  <div class="eyebrow reveal">Selection logic</div>
+  <h2 class="reveal d2">Organizations select ERP by balancing functional fit, cost, scale, support, and long-term sustainability.</h2>
+  <div class="visual-panel zoomable reveal d3" aria-label="ERP selection decision wheel">
+    <svg viewBox="0 0 1500 450" role="img" aria-label="Decision wheel with six ERP selection criteria">
+      <circle cx="750" cy="225" r="85" fill="#ff5722"/>
+      <text x="750" y="218" text-anchor="middle" font-family="Arial" font-size="30" font-weight="700" fill="#fff">ERP</text>
+      <text x="750" y="252" text-anchor="middle" font-family="Arial" font-size="20" fill="#fff">selection</text>
+      <g font-family="Arial" font-size="24" font-weight="700" text-anchor="middle">
+        <ellipse cx="750" cy="60" rx="160" ry="55" fill="#eef5fb" stroke="#245d91"/><text x="750" y="68">Functional fit</text>
+        <ellipse cx="1065" cy="125" rx="170" ry="55" fill="#f4fbf8" stroke="#197a64"/><text x="1065" y="133">Support availability</text>
+        <ellipse cx="1085" cy="320" rx="160" ry="55" fill="#fff7f3" stroke="#ff5722"/><text x="1085" y="328">Scalability</text>
+        <ellipse cx="750" cy="392" rx="165" ry="55" fill="#f6f1ff" stroke="#6941c6"/><text x="750" y="400">Data and control needs</text>
+        <ellipse cx="415" cy="320" rx="165" ry="55" fill="#fff8ec" stroke="#9a6400"/><text x="415" y="328">Total cost of use</text>
+        <ellipse cx="435" cy="125" rx="175" ry="55" fill="#fde8f0" stroke="#9d174d"/><text x="435" y="133">Implementation capacity</text>
+      </g>
+      <g stroke="#ff5722" stroke-width="4"><line x1="750" y1="140" x2="750" y2="115"/><line x1="827" y1="174" x2="944" y2="145"/><line x1="831" y1="272" x2="955" y2="309"/><line x1="750" y1="310" x2="750" y2="337"/><line x1="669" y1="272" x2="548" y2="309"/><line x1="673" y1="174" x2="554" y2="145"/></g>
+    </svg>
+    <span class="zoom-note">Tap or click to enlarge</span>
+  </div>
+  <p class="caption">Decision quality improves when organizations consider process fit, local support, resource capacity, and governance requirements at the same time.</p>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">8 / 15</div>
+</section>
+<section class="slide" id="slide-9" data-title="The Philippine ERP Context" aria-hidden="true">
+  <div class="eyebrow reveal">Philippine context</div>
+  <h2 class="reveal d2">ERP adoption in the Philippines is shaped by organization size, digital maturity, and access to implementation support.</h2>
+  <div class="band">
+    <div class="mini fragment"><h3>Large enterprises</h3><p>Often seek enterprise-grade control, multi-site visibility, and structured partner support.</p></div>
+    <div class="mini fragment"><h3>Growing SMEs</h3><p>Look for manageable cost, faster deployment, and practical module coverage.</p></div>
+    <div class="mini fragment"><h3>Public institutions</h3><p>Emphasize transparency, accountability, controls, and process standardization.</p></div>
+    <div class="mini fragment"><h3>Schools and cooperatives</h3><p>Need integration, affordability, and usable administrative systems.</p></div>
+    <div class="mini fragment"><h3>Regional firms</h3><p>Need branch visibility, inventory control, and consistent records across locations.</p></div>
+  </div>
+  <div class="split equal">
+    <div class="card reveal d4"><h3>Digital transformation momentum</h3><p>Government and industry initiatives encourage digitization, especially for MSMEs and organizations seeking more efficient operations.</p></div>
+    <div class="card reveal d5"><h3>Access is broadening</h3><p>Cloud deployment and open-source platforms make ERP more reachable for organizations that previously relied on manual tools or disconnected systems.</p></div>
+  </div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">9 / 15</div>
+</section>
+<section class="slide" id="slide-10" data-title="Before and After: What Broadens Access to ERP" aria-hidden="true">
+  <div class="eyebrow reveal">Before-and-after view</div>
+  <h2 class="reveal d2">Cloud and open-source options have widened access to ERP for many Philippine organizations.</h2>
+  <div class="before-after">
+    <div class="photo-card reveal d3">
+      <div class="photo-head before">Before broader access</div>
+      <div class="photo-art">
+        <svg viewBox="0 0 580 240" role="img" aria-label="Illustration of limited ERP access before cloud and open-source options"><rect x="40" y="40" width="500" height="150" rx="26" fill="#fff1f2" stroke="#9d174d" stroke-width="3"/><rect x="78" y="75" width="170" height="86" rx="14" fill="#fff" stroke="#9d174d"/><text x="163" y="115" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">High entry barrier</text><rect x="280" y="75" width="220" height="86" rx="14" fill="#fff" stroke="#9d174d"/><text x="390" y="108" text-anchor="middle" font-family="Arial" font-size="22" font-weight="700">Heavy infrastructure</text><text x="390" y="136" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">greater upfront commitment</text></svg>
+      </div>
+      <div class="card-body"><p>ERP was often perceived as suitable mainly for organizations with stronger capital, infrastructure ownership, and specialized technical support.</p></div>
+    </div>
+    <div class="photo-card reveal d4">
+      <div class="photo-head after">After broader access</div>
+      <div class="photo-art">
+        <svg viewBox="0 0 580 240" role="img" aria-label="Illustration of broader ERP access with cloud and open-source options"><rect x="42" y="42" width="500" height="150" rx="26" fill="#edfdf8" stroke="#197a64" stroke-width="3"/><circle cx="153" cy="116" r="46" fill="#ff5722" opacity=".93"/><text x="153" y="123" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#fff">Cloud</text><circle cx="292" cy="116" r="46" fill="#245d91" opacity=".9"/><text x="292" y="123" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#fff">Open</text><circle cx="431" cy="116" r="46" fill="#197a64" opacity=".9"/><text x="431" y="123" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#fff">Partner</text><text x="292" y="181" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">more entry paths to integrated systems</text></svg>
+      </div>
+      <div class="card-body"><p>Subscription services, modular deployment, and open-source communities have made ERP more practical for a wider range of Philippine institutions and businesses.</p></div>
+    </div>
+  </div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">10 / 15</div>
+</section>
+<section class="slide" id="slide-11" data-title="Local Requirements that Shape ERP Choice" aria-hidden="true">
+  <div class="eyebrow reveal">Local business requirements</div>
+  <h2 class="reveal d2">In the Philippine setting, ERP choice is shaped by operational realities as well as software features.</h2>
+  <div class="grid-3">
+    <div class="card fragment"><h3>Regulatory reporting</h3><p>Organizations consider whether the system can support required financial and operational records and adaptable reporting structures.</p></div>
+    <div class="card fragment"><h3>Multi-branch visibility</h3><p>Retailers, distributors, and service networks need consistent monitoring across locations and operating units.</p></div>
+    <div class="card fragment"><h3>Internet and infrastructure reliability</h3><p>Connectivity conditions influence whether cloud-only use, hybrid support, or stronger offline procedures are needed.</p></div>
+    <div class="card fragment"><h3>Training and user readiness</h3><p>ERP success depends on whether users can adopt new processes and maintain clean data.</p></div>
+    <div class="card fragment"><h3>Local support reach</h3><p>Organizations benefit when implementation partners and support providers understand local operating conditions.</p></div>
+    <div class="card fragment"><h3>Growth direction</h3><p>The chosen platform should still fit if the organization expands locations, users, modules, or reporting needs.</p></div>
+  </div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">11 / 15</div>
+</section>
+<section class="slide" id="slide-12" data-title="From Selection to Sustained Use" aria-hidden="true">
+  <div class="eyebrow reveal">Lifecycle process map</div>
+  <h2 class="reveal d2">ERP value is sustained through a lifecycle of selection, configuration, adoption, and continuous support.</h2>
+  <div class="visual-panel zoomable reveal d3" aria-label="Lifecycle process from selection to support">
+    <svg viewBox="0 0 1500 430" role="img" aria-label="ERP lifecycle steps from selection to continuous support">
+      <defs><marker id="life7" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ff5722"/></marker></defs>
+      <g font-family="Arial" text-anchor="middle">
+        <rect x="45" y="165" width="190" height="96" rx="18" fill="#fff" stroke="#1a1a1a"/><text x="140" y="205" font-size="25" font-weight="700">Selection</text><text x="140" y="232" font-size="18" fill="#5f6b7a">fit, scope, platform</text>
+        <rect x="295" y="165" width="190" height="96" rx="18" fill="#fff7f3" stroke="#ff5722"/><text x="390" y="205" font-size="25" font-weight="700">Configuration</text><text x="390" y="232" font-size="18" fill="#5f6b7a">rules, forms, roles</text>
+        <rect x="545" y="165" width="190" height="96" rx="18" fill="#eef5fb" stroke="#245d91"/><text x="640" y="205" font-size="25" font-weight="700">Migration</text><text x="640" y="232" font-size="18" fill="#5f6b7a">clean data transfer</text>
+        <rect x="795" y="165" width="190" height="96" rx="18" fill="#f4fbf8" stroke="#197a64"/><text x="890" y="205" font-size="25" font-weight="700">Adoption</text><text x="890" y="232" font-size="18" fill="#5f6b7a">training and use</text>
+        <rect x="1045" y="165" width="190" height="96" rx="18" fill="#fff8ec" stroke="#9a6400"/><text x="1140" y="205" font-size="25" font-weight="700">Go-live</text><text x="1140" y="232" font-size="18" fill="#5f6b7a">controlled launch</text>
+        <rect x="1295" y="165" width="160" height="96" rx="18" fill="#f6f1ff" stroke="#6941c6"/><text x="1375" y="205" font-size="25" font-weight="700">Support</text><text x="1375" y="232" font-size="18" fill="#5f6b7a">improve and govern</text>
+      </g>
+      <g stroke="#ff5722" stroke-width="5"><line x1="235" y1="213" x2="285" y2="213" marker-end="url(#life7)"/><line x1="485" y1="213" x2="535" y2="213" marker-end="url(#life7)"/><line x1="735" y1="213" x2="785" y2="213" marker-end="url(#life7)"/><line x1="985" y1="213" x2="1035" y2="213" marker-end="url(#life7)"/><line x1="1235" y1="213" x2="1285" y2="213" marker-end="url(#life7)"/></g>
+    </svg>
+    <span class="zoom-note">Tap or click to enlarge</span>
+  </div>
+  <p class="caption">The platform decision is only the starting point. Long-term value depends on how the ecosystem supports implementation and disciplined use over time.</p>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">12 / 15</div>
+</section>
+<section class="slide" id="slide-13" data-title="Risks and Limitations in ERP Ecosystem Choice" aria-hidden="true">
+  <div class="eyebrow reveal">Key considerations</div>
+  <h2 class="reveal d2">ERP ecosystem choices involve trade-offs that must be managed deliberately.</h2>
+  <div class="grid-3">
+    <div class="card fragment"><h3>Vendor dependence</h3><p>Heavy reliance on one provider can limit flexibility if pricing, support, or roadmap priorities change.</p></div>
+    <div class="card fragment"><h3>Support gaps</h3><p>A promising platform may still fail if implementation and post-go-live support are weak or inconsistent.</p></div>
+    <div class="card fragment"><h3>Customization overload</h3><p>Too many changes can make upgrades, governance, and future maintenance more difficult.</p></div>
+    <div class="card fragment"><h3>Hidden total cost</h3><p>Implementation work, training, infrastructure, and ongoing support can be significant even when software access seems affordable.</p></div>
+    <div class="card fragment"><h3>Data and security exposure</h3><p>Access design, hosting decisions, and governance practices must protect organizational information.</p></div>
+    <div class="card fragment"><h3>Change resistance</h3><p>Users may continue informal workarounds unless roles, procedures, and leadership support are aligned.</p></div>
+  </div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">13 / 15</div>
+</section>
+<section class="slide" id="slide-14" data-title="Matching ERP Choices to Organizational Needs" aria-hidden="true">
+  <div class="eyebrow reveal">Concept integration</div>
+  <h2 class="reveal d2">The best ERP choice is the one that fits organizational needs, resources, governance capacity, and local operating conditions.</h2>
+  <div class="mosaic">
+    <div class="visual-panel reveal d3" style="min-height:420px;">
+      <svg viewBox="0 0 920 420" role="img" aria-label="Fit matrix matching needs and resources to ERP choices">
+        <rect x="120" y="45" width="700" height="300" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="470" y1="45" x2="470" y2="345" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="120" y1="195" x2="820" y2="195" stroke="#1a1a1a" stroke-width="2"/>
+        <text x="468" y="390" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Organizational resources and support capacity →</text>
+        <text x="54" y="195" transform="rotate(-90 54,195)" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Complexity and control needs →</text>
+        <rect x="145" y="70" width="300" height="95" rx="18" fill="#fff8ec" stroke="#9a6400"/><text x="295" y="107" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Focused or modular entry</text><text x="295" y="135" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">manageable scope with clear priorities</text>
+        <rect x="495" y="70" width="300" height="95" rx="18" fill="#eef5fb" stroke="#245d91"/><text x="645" y="107" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Enterprise platform fit</text><text x="645" y="135" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">broader control and structured support</text>
+        <rect x="145" y="220" width="300" height="95" rx="18" fill="#f4fbf8" stroke="#197a64"/><text x="295" y="257" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Flexible open-source route</text><text x="295" y="285" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">adapts well when governance remains strong</text>
+        <rect x="495" y="220" width="300" height="95" rx="18" fill="#fff7f3" stroke="#ff5722"/><text x="645" y="257" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Hybrid decision space</text><text x="645" y="285" text-anchor="middle" font-family="Arial" font-size="18" fill="#5f6b7a">fit depends on deployment and partner model</text>
+      </svg>
+    </div>
+    <div class="stack">
+      <div class="card fragment"><h3>Fit over popularity</h3><p>The most recognized vendor is not automatically the best option for every organization.</p></div>
+      <div class="card fragment"><h3>Support over appearance</h3><p>Platform success depends on the support network and the organization’s ability to govern use.</p></div>
+      <div class="card fragment"><h3>Context over trend</h3><p>Philippine organizations should match ERP choice to real operating conditions, not only to market trends.</p></div>
+    </div>
+  </div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">14 / 15</div>
+</section>
+<section class="slide" id="slide-15" data-title="Lesson Summary" aria-hidden="true">
+  <div class="eyebrow reveal">Lesson summary</div>
+  <h2 class="reveal d2">Session 7 key concepts</h2>
+  <div class="summary-grid">
+    <div class="summary-card fragment"><h3>ERP ecosystem</h3><p>ERP operates through a wider system of vendors, implementation partners, infrastructure services, governance structures, and organizational users.</p></div>
+    <div class="summary-card fragment"><h3>Platform choice</h3><p>Commercial and open-source ERP offer different models of ownership, support, flexibility, and long-term responsibility.</p></div>
+    <div class="summary-card fragment"><h3>Philippine context</h3><p>ERP choice in the Philippines is shaped by affordability, digital maturity, local support, infrastructure conditions, and organizational growth needs.</p></div>
+  </div>
+  <div class="callout reveal d4"><p>ERP selection is a strategic fit decision: the platform, support chain, and local operating context must all align.</p></div>
+  <div class="footer-tag">PROFEL 1 · Enterprise Resource Planning and Management · Week 4 · Session 7</div>
+  <div class="slide-tag">15 / 15</div>
+</section>
+
+<div id="chrome" aria-hidden="false">
+  <div id="progressTrack" aria-label="Presentation progress"><div id="progressBar"></div></div>
+  <div id="dots" aria-label="Slide navigation"></div>
+  <div id="controls">
+    <button class="control-btn" id="prevBtn" type="button" aria-label="Previous lesson element or slide">Previous</button>
+    <button class="control-btn primary" id="nextBtn" type="button" aria-label="Next lesson element or slide">Next</button>
+  </div>
+  <div id="status">Arrow keys navigate · Space reveals or advances · Home/End jump · F toggles full screen</div>
+</div>
+</main>
+<div id="orientationHint" role="status">Rotate to landscape for larger slide text.</div>
+<div id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Enlarged visual">
+  <button id="modalClose" type="button" aria-label="Close enlarged visual">×</button>
+  <div id="modalContent"></div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const progressBar = document.getElementById('progressBar');
+  const dotsWrap = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const modal = document.getElementById('modal');
+  const modalContent = document.getElementById('modalContent');
+  const modalClose = document.getElementById('modalClose');
+  let current = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+
+  function resizeStage() {
+    const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  function buildDots() {
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot';
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.addEventListener('click', () => showSlide(index));
+      dotsWrap.appendChild(dot);
+    });
+  }
+  function setFragmentState(slide, reset = false) {
+    const fragments = [...slide.querySelectorAll('.fragment')];
+    fragments.forEach((fragment) => {
+      if (reset) fragment.classList.remove('shown');
+      fragment.setAttribute('aria-hidden', fragment.classList.contains('shown') ? 'false' : 'true');
+    });
+  }
+  function showSlide(index) {
+    const clamped = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'entered');
+      slide.setAttribute('aria-hidden', i === clamped ? 'false' : 'true');
+    });
+    current = clamped;
+    const active = slides[current];
+    active.classList.add('active');
+    setFragmentState(active, true);
+    requestAnimationFrame(() => requestAnimationFrame(() => active.classList.add('entered')));
+    const progress = ((current + 1) / slides.length) * 100;
+    progressBar.style.width = `${progress}%`;
+    [...dotsWrap.children].forEach((dot, i) => dot.classList.toggle('active', i === current));
+    prevBtn.disabled = current === 0 && !active.querySelector('.fragment.shown');
+    nextBtn.disabled = current === slides.length - 1 && !active.querySelector('.fragment:not(.shown)');
+    document.title = `${active.dataset.title} — ${current + 1}/${slides.length}`;
+    history.replaceState(null, '', `#slide-${current + 1}`);
+  }
+  function revealNext() {
+    const active = slides[current];
+    const nextFragment = active.querySelector('.fragment:not(.shown)');
+    if (nextFragment) {
+      nextFragment.classList.add('shown');
+      nextFragment.setAttribute('aria-hidden', 'false');
+      prevBtn.disabled = false;
+      nextBtn.disabled = current === slides.length - 1 && !active.querySelector('.fragment:not(.shown)');
+      return;
+    }
+    if (current < slides.length - 1) showSlide(current + 1);
+  }
+  function retreat() {
+    const active = slides[current];
+    const shown = [...active.querySelectorAll('.fragment.shown')];
+    if (shown.length) {
+      const last = shown[shown.length - 1];
+      last.classList.remove('shown');
+      last.setAttribute('aria-hidden', 'true');
+      nextBtn.disabled = false;
+      prevBtn.disabled = current === 0 && shown.length === 1;
+      return;
+    }
+    if (current > 0) showSlide(current - 1);
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    modalContent.innerHTML = '';
+  }
+  function openModal(source) {
+    modalContent.innerHTML = source.innerHTML;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    modalClose.focus();
+  }
+  prevBtn.addEventListener('click', retreat);
+  nextBtn.addEventListener('click', revealNext);
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+  document.querySelectorAll('.zoomable').forEach((item) => {
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-label', `${item.getAttribute('aria-label') || 'Visual'}; open enlarged view`);
+    item.addEventListener('click', () => openModal(item));
+    item.addEventListener('keydown', (event) => { if (event.key === 'Enter') openModal(item); });
+  });
+  document.addEventListener('keydown', (event) => {
+    if (modal.classList.contains('open')) { if (event.key === 'Escape') closeModal(); return; }
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName)) return;
+    switch (event.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ': event.preventDefault(); revealNext(); break;
+      case 'ArrowLeft': case 'ArrowUp': event.preventDefault(); retreat(); break;
+      case 'Home': event.preventDefault(); showSlide(0); break;
+      case 'End': event.preventDefault(); showSlide(slides.length - 1); break;
+      case 'Escape': closeModal(); break;
+      case 'f': case 'F': event.preventDefault(); if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); break;
+    }
+  });
+  window.addEventListener('touchstart', (event) => {
+    if (event.touches.length !== 1) return;
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    touchStartTime = performance.now();
+  }, { passive: true });
+  window.addEventListener('touchend', (event) => {
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if (performance.now() - touchStartTime > 700) return;
+    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+    if (dx < 0) revealNext(); else retreat();
+  }, { passive: true });
+  window.addEventListener('resize', resizeStage);
+  document.addEventListener('fullscreenchange', resizeStage);
+  buildDots();
+  resizeStage();
+  const hashMatch = location.hash.match(/slide-(\d+)/);
+  showSlide(hashMatch ? Number(hashMatch[1]) - 1 : 0);
+  window.__deckTest = { slides, showSlide, revealNext, retreat, get current(){ return current; } };
+})();
+</script>
+</body>
+</html>
