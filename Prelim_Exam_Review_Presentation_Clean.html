@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ff5722">
+<title>ERP Prelim Exam Review</title>
+<style>
+:root{
+  --accent:#ff5722;
+  --accent-dark:#d84212;
+  --accent-soft:#fff0ea;
+  --blue:#245d91;
+  --blue-soft:#eaf2f9;
+  --green:#197a64;
+  --green-soft:#e9f7f3;
+  --ink:#17202a;
+  --muted:#5f6b7a;
+  --paper:#fbfaf8;
+  --card:#ffffff;
+  --line:#ddd7d1;
+  --shadow:0 18px 52px rgba(23,32,42,.12);
+  --scale:1;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#17191d;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+#viewport{position:fixed;inset:0;display:block;overflow:hidden;background:radial-gradient(circle at 10% 10%,rgba(255,87,34,.16),transparent 30rem),#17191d}
+#deck{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform:translate(-50%,-50%) scale(var(--scale));transform-origin:center center;background:var(--paper);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 90px rgba(0,0,0,.42)}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;padding:58px 72px 66px;background:
+ linear-gradient(rgba(23,32,42,.025) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(23,32,42,.025) 1px,transparent 1px),
+ radial-gradient(circle at 92% 0%,rgba(255,87,34,.10),transparent 360px),
+ var(--paper);background-size:140px 140px,140px 140px,auto,auto}
+.slide.active{display:flex;flex-direction:column;animation:slideIn .28s ease both}
+@keyframes slideIn{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+.slide::after{content:"";position:absolute;inset:auto -120px -180px auto;width:440px;height:440px;border-radius:50%;background:rgba(36,93,145,.055);pointer-events:none}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.kicker{font-size:21px;line-height:1.2;text-transform:uppercase;letter-spacing:.12em;font-weight:850;color:var(--accent-dark);margin-bottom:14px}
+h1,h2,h3,p{margin:0}
+h1{font-size:82px;line-height:.98;letter-spacing:-.045em;font-weight:900;max-width:1120px}
+h2{font-size:54px;line-height:1.05;letter-spacing:-.035em;font-weight:900;max-width:1350px}
+h3{font-size:30px;line-height:1.15;font-weight:850}
+p,li,td{font-size:26px;line-height:1.38}
+.small{font-size:21px;line-height:1.35;color:var(--muted)}
+.muted{color:var(--muted)}
+.accent{color:var(--accent-dark)}
+.blue{color:var(--blue)}
+.green{color:var(--green)}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;margin-bottom:34px;position:relative;z-index:2}
+.header .session-badge{flex:0 0 auto;min-width:176px;padding:14px 18px;border-radius:18px;background:var(--accent);color:#fff;font-weight:900;font-size:23px;text-align:center;box-shadow:0 12px 28px rgba(255,87,34,.22)}
+.content{position:relative;z-index:2;flex:1;min-height:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 10px 28px rgba(23,32,42,.07)}
+.card h3{margin-bottom:9px}
+.card p,.card li{font-size:23px;line-height:1.34}
+.card ul{margin:8px 0 0;padding-left:26px}
+.card li{margin:5px 0}
+.callout{border-left:7px solid var(--accent);background:var(--accent-soft);border-radius:0 20px 20px 0;padding:24px 28px}
+.callout strong{display:block;font-size:21px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-dark);margin-bottom:8px}
+.callout p{font-size:29px;line-height:1.32;font-weight:650}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:21px;font-weight:750}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.flow{display:flex;align-items:stretch;justify-content:center;gap:12px;margin-top:18px}
+.flow .node{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 14px;text-align:center;font-size:23px;line-height:1.2;font-weight:850;display:grid;place-items:center;box-shadow:0 8px 22px rgba(23,32,42,.06)}
+.flow .node small{display:block;font-size:18px;line-height:1.2;color:var(--muted);font-weight:650;margin-top:6px}
+.flow .arrow{align-self:center;font-size:34px;color:var(--accent-dark);font-weight:900}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-top:24px}
+.timeline .era{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px 16px;text-align:center;box-shadow:0 8px 24px rgba(23,32,42,.06)}
+.timeline .era:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);z-index:2;color:var(--accent-dark);font-size:26px;font-weight:900}
+.timeline b{display:block;color:var(--accent-dark);font-size:23px;margin-bottom:6px}
+.timeline span{display:block;font-size:27px;font-weight:900}
+.timeline small{display:block;font-size:18px;color:var(--muted);margin-top:6px;line-height:1.2}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 10px 28px rgba(23,32,42,.07)}
+.matrix th,.matrix td{padding:15px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.matrix th:last-child,.matrix td:last-child{border-right:0}
+.matrix tr:last-child td{border-bottom:0}
+.matrix th{font-size:19px;text-transform:uppercase;letter-spacing:.07em;color:var(--accent-dark);background:var(--accent-soft)}
+.matrix td{font-size:22px;line-height:1.3}
+.label{display:inline-block;padding:6px 10px;border-radius:10px;background:var(--blue-soft);color:var(--blue);font-weight:850;font-size:18px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px}
+.tag{display:inline-flex;padding:7px 10px;border-radius:9px;background:#f2efec;color:#4c5158;font-size:18px;font-weight:760;margin:4px 5px 0 0}
+.week-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+.week-card{display:grid;grid-template-columns:145px 1fr;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 10px 28px rgba(23,32,42,.07)}
+.week-card .week{display:grid;place-items:center;background:linear-gradient(145deg,var(--accent),var(--accent-dark));color:#fff;font-size:29px;font-weight:900;text-align:center;padding:16px}
+.week-card .sessions{padding:20px 23px;display:grid;gap:13px}
+.week-card .sessions div{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:start}
+.week-card b{font-size:21px;color:var(--accent-dark)}
+.week-card span{font-size:22px;line-height:1.25;font-weight:760}
+.hero{justify-content:center}
+.hero .hero-grid{display:block;width:min(1240px,100%);margin:0 auto;text-align:center;position:relative;z-index:2}
+.hero h1{max-width:none;margin-inline:auto}
+.hero .kicker{margin-bottom:24px}
+.hero .subtitle{font-size:34px;line-height:1.45;color:var(--muted);max-width:1080px;margin:30px auto 0}
+.hero::before{content:"ERP";position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);font-size:410px;line-height:1;font-weight:950;letter-spacing:-.08em;color:rgba(255,87,34,.035);pointer-events:none}
+.big-number{font-size:58px;line-height:1;font-weight:950;color:var(--accent-dark);letter-spacing:-.04em}
+.stack{display:grid;gap:18px}
+.compare-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.compare-pair>div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.compare-pair h3{font-size:25px;margin-bottom:7px}
+.compare-pair p{font-size:21px;line-height:1.3}
+.synthesis-map{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto auto;gap:18px;align-items:stretch}
+.synthesis-map .box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;text-align:center;box-shadow:0 9px 24px rgba(23,32,42,.06)}
+.synthesis-map .box h3{font-size:27px;margin-bottom:8px}
+.synthesis-map .box p{font-size:21px;line-height:1.28;color:var(--muted)}
+.synthesis-map .center{grid-column:2;grid-row:2;background:linear-gradient(145deg,var(--accent),var(--accent-dark));color:#fff;display:grid;place-items:center;min-height:150px}
+.synthesis-map .center h3{font-size:40px;margin:0}
+.synthesis-map .center p{color:rgba(255,255,255,.88);font-size:22px;margin-top:8px}
+.question-grid{height:100%}
+.questions{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-content:start}
+.question{background:#fff;border:1px solid var(--line);border-radius:20px;padding:23px 25px;font-size:25px;line-height:1.32;font-weight:720;box-shadow:0 8px 22px rgba(23,32,42,.055)}
+.question b{color:var(--accent-dark)}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.checklist .card{padding:22px}
+.checklist ul{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}
+.checklist li{position:relative;padding-left:30px;font-size:22px}
+.checklist li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:950}
+@media (prefers-reduced-motion:reduce){.slide.active{animation:none}}
+
+/* Slide-specific compaction after content consolidation */
+#w1s1 .stack{gap:12px}
+#w1s1 .card{padding:16px}
+#w1s1 .card p{font-size:19px;line-height:1.24}
+#w1s1 .callout{padding:16px 20px}
+#w1s1 .callout p{font-size:23px;line-height:1.24}
+#w1s2 .grid-2{gap:18px;margin-top:20px!important}
+#w1s2 .card{padding:19px}
+#w1s2 .matrix th,#w1s2 .matrix td{padding:9px 11px}
+#w1s2 .matrix td{font-size:18px;line-height:1.2}
+#w1s2 .matrix th{font-size:16px}
+#w1s2 .timeline{margin-top:16px}
+#w3s6 .callout{margin-top:18px!important;padding:17px 22px}
+#w3s6 .callout p{font-size:23px;line-height:1.28}
+#w4s7 .stack{gap:12px}
+#w4s7 .card{padding:18px}
+#w4s7 .card p,#w4s7 .compare-pair p{font-size:19px;line-height:1.25}
+#w4s7 .compare-pair{gap:10px}
+#w4s7 .compare-pair>div{padding:15px}
+#w4s7 .flow{gap:7px}
+#w4s7 .flow .node{padding:13px 8px;font-size:18px}
+#w4s7 .flow .arrow{font-size:24px}
+#w4s7 .callout{padding:18px 21px}
+#w4s7 .callout p{font-size:24px}
+#master-summary .callout{padding:18px 23px}
+#master-summary .callout p{font-size:25px}
+#master-summary .checklist{gap:14px;margin-top:18px!important}
+#master-summary .card{padding:17px}
+#master-summary .card h3{font-size:25px}
+#master-summary .card p,#master-summary .checklist li{font-size:19px;line-height:1.24}
+#master-summary .checklist ul{gap:5px}
+#master-summary .grid-3{gap:14px;margin-top:14px!important}
+
+@page{size:1600px 900px;margin:0}
+@media print{
+  html,body{overflow:visible;background:#fff;height:auto}
+  #viewport{position:static;display:block;overflow:visible;background:#fff}
+  #deck{position:relative!important;left:auto!important;top:auto!important;transform:none!important;width:1600px;height:auto;box-shadow:none}
+  .slide,.slide.active{position:relative!important;display:flex!important;width:1600px!important;height:900px!important;min-height:900px!important;max-height:900px!important;overflow:hidden!important;page-break-inside:avoid!important;break-inside:avoid!important;page-break-after:always;break-after:page;flex:none!important}
+}
+</style>
+</head>
+<body>
+<div id="viewport">
+  <main id="deck" aria-label="ERP Prelim Exam Review presentation">
+
+    <section class="slide hero active" id="opening" data-title="Opening">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker">PROFEL 1 · Enterprise Resource Planning and Management</div>
+          <h1>Prelim Exam Review</h1>
+          <p class="subtitle">Weeks 1–4 · Sessions 1–8 · Complete lesson recap</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="coverage" data-title="Coverage">
+      <div class="header"><div><div class="kicker">Prelim Learning Coverage</div><h2>Eight sessions in the original teaching sequence</h2></div><div class="session-badge">Coverage</div></div>
+      <div class="content week-grid">
+        <article class="week-card"><div class="week">Week 1</div><div class="sessions"><div><b>Session 1</b><span>Introduction to ERP</span></div><div><b>Session 2</b><span>Evolution of ERP Systems</span></div></div></article>
+        <article class="week-card"><div class="week">Week 2</div><div class="sessions"><div><b>Session 3</b><span>ERP Architecture</span></div><div><b>Session 4</b><span>Finance, Procurement, and Inventory</span></div></div></article>
+        <article class="week-card"><div class="week">Week 3</div><div class="sessions"><div><b>Session 5</b><span>Sales, Production, HR, and CRM</span></div><div><b>Session 6</b><span>Business Value and Strategic Alignment</span></div></div></article>
+        <article class="week-card"><div class="week">Week 4</div><div class="sessions"><div><b>Session 7</b><span>ERP Ecosystem and Philippine Context</span></div><div><b>Session 8</b><span>Foundations Synthesis and Integration</span></div></div></article>
+      </div>
+    </section>
+
+    <section class="slide" id="w1s1" data-title="Week 1 Session 1">
+      <div class="header"><div><div class="kicker">Week 1 · Session 1</div><h2>Introduction to Enterprise Resource Planning</h2></div><div class="session-badge">W1 · S1</div></div>
+      <div class="content grid-2">
+        <div class="stack">
+          <div class="callout"><strong>Key Concept</strong><p>ERP is an integrated information system that connects major business functions through a shared database, enabling real-time data flow and coordinated planning, execution, and control.</p></div>
+          <div class="card"><h3>Why ERP is needed</h3><div class="pill-row"><span class="tag">Duplicate work</span><span class="tag">Conflicting data</span><span class="tag">Slow reports</span><span class="tag">Poor decisions</span><span class="tag">Weak traceability</span><span class="tag">Scaling problems</span></div><p style="margin-top:12px">Disconnected records create repeated encoding, inconsistent results, delayed visibility, and weaker control across operations.</p></div>
+        </div>
+        <div class="stack">
+          <div class="grid-2">
+            <div class="card"><span class="label">1</span><h3>Integration</h3><p>One transaction can affect related functions automatically.</p></div>
+            <div class="card"><span class="label">2</span><h3>Shared database</h3><p>Authorized modules use one controlled source of records.</p></div>
+            <div class="card"><span class="label">3</span><h3>Real-time processing</h3><p>Updates are available without repeated manual consolidation.</p></div>
+            <div class="card"><span class="label">4</span><h3>Cross-functional scope</h3><p>Finance, sales, inventory, HR, procurement, production, and more.</p></div>
+          </div>
+          <div class="card"><h3>Remember</h3><p><b>Enterprise</b> = whole organization. <b>Resource</b> = money, people, materials, time, and information. <b>Planning</b> = coordination, decisions, forecasting, and control.</p><p style="margin-top:6px">ERP is not only accounting software or one brand. It needs clean data, trained users, sound processes, management commitment, and maintenance.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="w1s2" data-title="Week 1 Session 2">
+      <div class="header"><div><div class="kicker">Week 1 · Session 2</div><h2>Evolution of ERP Systems</h2></div><div class="session-badge">W1 · S2</div></div>
+      <div class="content">
+        <div class="timeline">
+          <div class="era"><b>1960s</b><span>MRP</span><small>Materials planning</small></div>
+          <div class="era"><b>1980s</b><span>MRP II</span><small>Materials + capacity + labor + cost</small></div>
+          <div class="era"><b>1990s</b><span>ERP</span><small>Major internal functions</small></div>
+          <div class="era"><b>2000s</b><span>ERP II</span><small>External value-chain links</small></div>
+          <div class="era"><b>2010s+</b><span>Cloud ERP</span><small>ERP delivered as a service</small></div>
+        </div>
+        <div class="grid-2" style="margin-top:26px">
+          <div class="card">
+            <div class="label">Formula to remember</div>
+            <p class="big-number" style="font-size:38px">Net Requirement = Gross Requirement − Available Inventory − Scheduled Receipts</p>
+            <p style="margin-top:16px"><b>Source demonstration:</b> 12,000 kg needed − 3,000 kg on hand − 0 scheduled receipts = <b class="accent">9,000 kg to order</b>.</p>
+          </div>
+          <div class="card">
+            <h3>Important distinctions</h3>
+            <table class="matrix" style="margin-top:12px">
+              <tr><th>Concept</th><th>Main focus</th></tr>
+              <tr><td><b>MRP</b></td><td>What materials are needed?</td></tr>
+              <tr><td><b>MRP II</b></td><td>Can manufacturing produce it with available resources and cost?</td></tr>
+              <tr><td><b>ERP</b></td><td>How can internal functions operate through one integrated system?</td></tr>
+              <tr><td><b>ERP II</b></td><td>How can the enterprise connect customers, suppliers, and partners?</td></tr>
+              <tr><td><b>Cloud ERP</b></td><td>How is ERP accessed and managed as a service?</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="w2s3" data-title="Week 2 Session 3">
+      <div class="header"><div><div class="kicker">Week 2 · Session 3</div><h2>ERP Architecture and Deployment Models</h2></div><div class="session-badge">W2 · S3</div></div>
+      <div class="content">
+        <div class="flow" aria-label="Three-tier ERP architecture">
+          <div class="node"><span>Presentation Tier</span><small>User interface, input, role-based views</small></div><div class="arrow">→</div>
+          <div class="node"><span>Application Tier</span><small>Business rules, workflows, calculations, services, security</small></div><div class="arrow">→</div>
+          <div class="node"><span>Data Tier</span><small>Master, transaction, configuration, audit, backup data</small></div>
+        </div>
+        <div class="grid-3" style="margin-top:28px">
+          <div class="card"><span class="label">On-premise</span><h3>Organization-managed</h3><p>Local infrastructure and direct technical responsibility; usually greater customization control and longer preparation.</p></div>
+          <div class="card"><span class="label">Cloud</span><h3>Provider-managed</h3><p>Provisioned service with internet access; usually faster deployment but dependent on provider capabilities and connectivity.</p></div>
+          <div class="card"><span class="label">Hybrid</span><h3>Shared environments</h3><p>Selected components remain local while others use external services; integration scope determines complexity.</p></div>
+        </div>
+        <div class="callout" style="margin-top:24px"><strong>Important Distinction</strong><p><b>Architecture</b> explains how the interface, business logic, and data interact. <b>Deployment</b> explains where the system runs and who manages its infrastructure.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" id="w2s4" data-title="Week 2 Session 4">
+      <div class="header"><div><div class="kicker">Week 2 · Session 4</div><h2>Finance, Procurement, and Inventory Modules</h2></div><div class="session-badge">W2 · S4</div></div>
+      <div class="content">
+        <div class="grid-3">
+          <div class="card"><span class="label">Finance</span><h3>Unified financial record</h3><p>General Ledger, Accounts Payable, Accounts Receivable, posting, controls, reconciliation, and reporting.</p></div>
+          <div class="card"><span class="label">Procurement</span><h3>Controlled purchasing</h3><p>Need identification, requisition, approval, purchase order, supplier coordination, receipt, and invoice matching.</p></div>
+          <div class="card"><span class="label">Inventory</span><h3>Trusted stock records</h3><p>Item identity, quantity, location, receipt, issue, transfer, adjustment, and availability status.</p></div>
+        </div>
+        <div class="flow" style="margin-top:30px" aria-label="Procure-to-pay integration loop">
+          <div class="node">Purchase Requisition<small>Need is documented</small></div><div class="arrow">→</div>
+          <div class="node">Purchase Order<small>Authorized supplier commitment</small></div><div class="arrow">→</div>
+          <div class="node">Goods Receipt<small>Inventory quantity and location update</small></div><div class="arrow">→</div>
+          <div class="node">Invoice Match<small>PO, receipt, and invoice are checked</small></div><div class="arrow">→</div>
+          <div class="node">Accounts Payable<small>Supplier liability and ledger effect</small></div>
+        </div>
+        <div class="callout" style="margin-top:26px"><strong>Process to Master</strong><p>A single purchasing event creates connected procurement documents, inventory movements, financial obligations, controls, and an audit trail.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" id="w3s5" data-title="Week 3 Session 5">
+      <div class="header"><div><div class="kicker">Week 3 · Session 5</div><h2>Sales, Production, HR, and CRM Modules</h2></div><div class="session-badge">W3 · S5</div></div>
+      <div class="content">
+        <div class="grid-4">
+          <div class="card"><span class="label">CRM</span><h3>Relationships</h3><p>Customer interactions, contact history, opportunities, service information, and relationship status.</p></div>
+          <div class="card"><span class="label">Sales</span><h3>Demand commitment</h3><p>Customer data, pricing, orders, fulfillment tracking, and billing readiness.</p></div>
+          <div class="card"><span class="label">Production</span><h3>Work execution</h3><p>BOM, routing, work centers, planning, material issue, labor time, completion, and quality status.</p></div>
+          <div class="card"><span class="label">HR</span><h3>Workforce accountability</h3><p>Employee master data, roles, attendance, payroll inputs, access, and responsibility.</p></div>
+        </div>
+        <div class="flow" style="margin-top:32px" aria-label="Demand-to-execution integration">
+          <div class="node">CRM Opportunity<small>Relationship and need</small></div><div class="arrow">→</div>
+          <div class="node">Sales Order<small>Validated commitment</small></div><div class="arrow">→</div>
+          <div class="node">Availability Check<small>Stock or capacity signal</small></div><div class="arrow">→</div>
+          <div class="node">Fulfillment / Production<small>Goods are issued, made, or delivered</small></div><div class="arrow">→</div>
+          <div class="node">Billing Readiness<small>Finance receives controlled transaction data</small></div>
+        </div>
+        <div class="callout" style="margin-top:26px"><strong>Remember</strong><p>CRM sustains the relationship; Sales controls the customer commitment; Production executes planned work; HR supplies workforce records and accountability.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" id="w3s6" data-title="Week 3 Session 6">
+      <div class="header"><div><div class="kicker">Week 3 · Session 6</div><h2>ERP Business Value and Strategic Alignment</h2></div><div class="session-badge">W3 · S6</div></div>
+      <div class="content">
+        <div class="grid-3">
+          <div class="card"><h3>Efficiency</h3><p>Reduces duplicate work and unnecessary information transfer.</p></div>
+          <div class="card"><h3>Visibility</h3><p>Makes reliable information available across departments.</p></div>
+          <div class="card"><h3>Control</h3><p>Embeds approvals, segregation of duties, validation, audit trail, and exception monitoring.</p></div>
+          <div class="card"><h3>Decision support</h3><p>Improves accuracy, timeliness, consistency, and traceability.</p></div>
+          <div class="card"><h3>Scalability</h3><p>Supports more users, transactions, branches, products, and reports.</p></div>
+          <div class="card"><h3>Alignment</h3><p>Matches ERP capabilities to priorities, processes, governance, and growth direction.</p></div>
+        </div>
+        <div class="flow" style="margin-top:26px">
+          <div class="node">Strategic Goals</div><div class="arrow">→</div><div class="node">ERP Design</div><div class="arrow">→</div><div class="node">Adoption + Data Discipline</div><div class="arrow">→</div><div class="node">Reliable Outputs</div><div class="arrow">→</div><div class="node">Business Value</div>
+        </div>
+        <div class="callout" style="margin-top:24px"><strong>Common value killers</strong><p>Strategic misfit, poor data quality, weak adoption, over-customization, unclear ownership, and judging value only by short-term license cost. TCO includes implementation, migration, training, support, upgrades, infrastructure, subscriptions, and governance.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" id="w4s7" data-title="Week 4 Session 7">
+      <div class="header"><div><div class="kicker">Week 4 · Session 7</div><h2>ERP Ecosystem and the Philippine Context</h2></div><div class="session-badge">W4 · S7</div></div>
+      <div class="content grid-2">
+        <div class="stack">
+          <div class="card"><h3>ERP ecosystem</h3><div class="flow" style="margin-top:15px"><div class="node">Platform Vendor / Community</div><div class="arrow">→</div><div class="node">Implementation Partner</div><div class="arrow">→</div><div class="node">Hosting / Infrastructure</div><div class="arrow">→</div><div class="node">Client Users and Managers</div></div></div>
+          <div class="compare-pair">
+            <div><h3>Commercial ERP</h3><p>Source examples: SAP, Oracle, Microsoft Dynamics, and mid-market suites. Emphasis: scale, structured support, and managed roadmaps.</p></div>
+            <div><h3>Open-source ERP</h3><p>Source examples: Odoo and ERPNext. Entry access is broader, but implementation, support, and technical governance are still required.</p></div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="callout"><strong>Selection principle</strong><p>Choose for functional fit, cost, scale, support, and long-term sustainability—not popularity alone.</p></div>
+          <div class="card"><h3>Philippine-context factors</h3><div class="pill-row"><span class="tag">Regulatory reporting</span><span class="tag">Multi-branch visibility</span><span class="tag">Internet reliability</span><span class="tag">Training readiness</span><span class="tag">Local support</span><span class="tag">Growth direction</span></div></div>
+          <div class="card"><h3>Context in the lessons</h3><p>Large organizations use full-scale ERP for high transaction volumes. Medium businesses adopt ERP as spreadsheets reach their limits. Cloud and open-source options widen access for smaller organizations.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="w4s8" data-title="Week 4 Session 8">
+      <div class="header"><div><div class="kicker">Week 4 · Session 8</div><h2>ERP Foundations Synthesis and Concept Integration</h2></div><div class="session-badge">W4 · S8</div></div>
+      <div class="content synthesis-map">
+        <div class="box"><h3>Problem</h3><p>Fragmented systems, duplicate work, inconsistent data, and slow visibility</p></div>
+        <div class="box"><h3>Evolution</h3><p>MRP → MRP II → ERP → ERP II → Cloud ERP</p></div>
+        <div class="box"><h3>Architecture</h3><p>Presentation, application, and data tiers with appropriate deployment</p></div>
+        <div class="box"><h3>Modules</h3><p>Finance, procurement, inventory, sales, production, HR, and CRM</p></div>
+        <div class="box center"><div><h3>ERP</h3><p>One coordinated enterprise system</p></div></div>
+        <div class="box"><h3>Shared Foundation</h3><p>Master data, controlled transactions, real-time flow, and auditability</p></div>
+        <div class="box"><h3>Value</h3><p>Efficiency, visibility, control, decision support, scalability, and alignment</p></div>
+        <div class="box"><h3>Ecosystem</h3><p>Vendors, communities, partners, infrastructure, users, governance, and context</p></div>
+        <div class="box"><h3>Result</h3><p>Plan, execute, monitor, and improve using connected information</p></div>
+      </div>
+      <div class="callout" style="margin-top:22px"><strong>Master idea</strong><p>ERP converts separate departmental activities into one coordinated organizational system through shared records, connected processes, and controlled decisions.</p></div>
+    </section>
+
+    <section class="slide" id="integrated-comparisons" data-title="Integrated Review Comparisons">
+      <div class="header"><div><div class="kicker">Integrated Review</div><h2>Concepts students commonly confuse</h2></div><div class="session-badge" style="background:var(--blue)">Compare</div></div>
+      <div class="content">
+        <table class="matrix">
+          <tr><th>Pair</th><th>First concept</th><th>Second concept</th><th>Fast memory cue</th></tr>
+          <tr><td><b>Fragmented system vs ERP</b></td><td>Separate records and manual transfer</td><td>Shared data and connected processes</td><td>Many versions vs one controlled enterprise record</td></tr>
+          <tr><td><b>Shared database vs integration</b></td><td>Common source of records</td><td>Rules and transaction flow connecting functions</td><td>Data foundation vs process connection</td></tr>
+          <tr><td><b>MRP vs MRP II</b></td><td>Materials planning</td><td>Materials plus manufacturing capacity, labor, and basic cost</td><td>Materials vs manufacturing resources</td></tr>
+          <tr><td><b>ERP vs ERP II</b></td><td>Internal enterprise integration</td><td>External customers, suppliers, and partners</td><td>Inside the enterprise vs across the value chain</td></tr>
+          <tr><td><b>Architecture vs deployment</b></td><td>How system layers interact</td><td>Where the system runs and who manages it</td><td>Structure vs location/ownership</td></tr>
+          <tr><td><b>Sales vs CRM</b></td><td>Orders and customer commitments</td><td>Relationships, opportunities, and service continuity</td><td>Transaction commitment vs relationship continuity</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" id="integrated-processes" data-title="Integrated Review Processes">
+      <div class="header"><div><div class="kicker">Integrated Review</div><h2>Two end-to-end process patterns to trace</h2></div><div class="session-badge" style="background:var(--green)">Connect</div></div>
+      <div class="content stack">
+        <div class="card"><span class="label">Demand to cash</span><div class="flow"><div class="node">CRM Opportunity</div><div class="arrow">→</div><div class="node">Sales Order</div><div class="arrow">→</div><div class="node">Inventory / Production</div><div class="arrow">→</div><div class="node">Delivery</div><div class="arrow">→</div><div class="node">Billing / Accounts Receivable</div></div><p style="margin-top:16px">Customer demand becomes a controlled commitment, checks availability, triggers fulfillment, and creates a financial record.</p></div>
+        <div class="card"><span class="label">Need to pay</span><div class="flow"><div class="node">Purchase Requisition</div><div class="arrow">→</div><div class="node">Purchase Order</div><div class="arrow">→</div><div class="node">Goods Receipt</div><div class="arrow">→</div><div class="node">Invoice Match</div><div class="arrow">→</div><div class="node">Accounts Payable / General Ledger</div></div><p style="margin-top:16px">An internal need becomes an authorized purchase, updates stock, verifies supplier documents, and records the obligation.</p></div>
+        <div class="callout"><strong>Integrated effect</strong><p>Both process patterns rely on shared master data, connected modules, controlled transactions, and financial records that remain traceable across the enterprise.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" id="review-questions" data-title="Integrated Review Questions">
+      <div class="header"><div><div class="kicker">Integrated Review</div><h2>Quick Prelim review questions</h2></div><div class="session-badge" style="background:var(--blue)">Review</div></div>
+      <div class="content question-grid">
+        <div class="questions">
+          <div class="question"><b>1.</b> Which ERP characteristic means all modules use one controlled source of records?</div>
+          <div class="question"><b>2.</b> Arrange MRP, MRP II, ERP, ERP II, and Cloud ERP from earliest to latest.</div>
+          <div class="question"><b>3.</b> Gross requirement is 24,000 units; available inventory is 10,000; no scheduled receipts are shown. Find the net requirement.</div>
+          <div class="question"><b>4.</b> Why is ERP II not the same as Cloud ERP?</div>
+          <div class="question"><b>5.</b> After order-receipt-invoice matching, which module records the supplier liability?</div>
+          <div class="question"><b>6.</b> Why can ERP fail to create value even when the software is technically working?</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="master-summary" data-title="Master Summary">
+      <div class="header"><div><div class="kicker">Integrated Review</div><h2>Prelim master summary</h2></div><div class="session-badge" style="background:var(--green)">Ready</div></div>
+      <div class="content">
+        <div class="callout"><strong>Master summary</strong><p>ERP integrates people, processes, data, technology, controls, and goals so the enterprise can plan, execute, monitor, and improve as one coordinated system.</p></div>
+        <div class="checklist" style="margin-top:24px">
+          <div class="card"><h3>Definitions and distinctions</h3><ul><li>ERP, shared database, integration, and real-time processing</li><li>MRP, MRP II, ERP, ERP II, and Cloud ERP</li><li>Architecture, deployment, master data, and transactional data</li><li>Finance, procurement, inventory, sales, production, HR, and CRM roles</li></ul></div>
+          <div class="card"><h3>Processes and applications</h3><ul><li>Why data silos create operational problems</li><li>The net requirement formula and result interpretation</li><li>Procure-to-pay and demand-to-cash module effects</li><li>How ERP creates efficiency, visibility, control, and strategic value</li><li>How context affects ERP platform selection</li></ul></div>
+        </div>
+        <div class="grid-3" style="margin-top:20px">
+          <div class="card"><h3>Key records</h3><p>Customer, item, employee/user, purchase order, goods receipt, invoice, sales order, work order, AP, AR, and GL.</p></div>
+          <div class="card"><h3>Key controls</h3><p>Approvals, role-based access, validation, matching, segregation of duties, audit trail, and exception monitoring.</p></div>
+          <div class="card"><h3>Enterprise-wide effect</h3><p>One controlled event can update operations, inventory, customer or supplier records, financial accounts, audit trails, and management information.</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<script>
+(() => {
+  'use strict';
+  const slides = [...document.querySelectorAll('.slide')];
+  const deck = document.getElementById('deck');
+  const live = document.getElementById('live');
+  let index = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let wheelLocked = false;
+
+  function fitDeck(){
+    const scale = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    document.documentElement.style.setProperty('--scale', String(scale));
+  }
+
+  function show(next, updateHash = true){
+    index = Math.max(0, Math.min(slides.length - 1, next));
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+    live.textContent = `${slides[index].dataset.title}.`;
+    if (updateHash) history.replaceState(null, '', `#${slides[index].id}`);
+  }
+
+  function fromHash(){
+    const id = location.hash.slice(1);
+    const found = slides.findIndex(s => s.id === id);
+    show(found >= 0 ? found : 0, false);
+  }
+
+
+  function fullscreen(){
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable) return;
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); show(index + 1); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); show(index - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+    else if (e.key.toLowerCase() === 'f') { e.preventDefault(); fullscreen(); }
+    else if (e.key.toLowerCase() === 'r') { e.preventDefault(); show(0); }
+  });
+
+  window.addEventListener('wheel', e => {
+    if (e.ctrlKey || wheelLocked || Math.abs(e.deltaY) < 24) return;
+    e.preventDefault();
+    wheelLocked = true;
+    show(index + (e.deltaY > 0 ? 1 : -1));
+    setTimeout(() => wheelLocked = false, 420);
+  }, {passive:false});
+
+  window.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+
+  window.addEventListener('touchend', e => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2) show(index + (dx < 0 ? 1 : -1));
+  }, {passive:true});
+
+  window.addEventListener('resize', fitDeck);
+  window.addEventListener('hashchange', fromHash);
+  document.addEventListener('fullscreenchange', fitDeck);
+  fitDeck();
+  fromHash();
+})();
+</script>
+</body>
+</html>
